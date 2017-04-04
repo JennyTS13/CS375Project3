@@ -11,8 +11,6 @@
  * The algorithm is naive, going through each element of each matrix sequentially
  * to calculate the product
  */
-
-
 public class MatrixMultSequential {
     /**
      * Calculates the product of multiplying two matrices
