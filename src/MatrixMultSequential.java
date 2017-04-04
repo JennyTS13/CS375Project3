@@ -39,10 +39,10 @@ public class MatrixMultSequential {
      */
     public static void main(String[] args) {
         int[][] A = {{1, 2},
-                {2, 1}};
+                     {2, 1}};
 
         int[][] B = {{1, 2},
-                {2, 1}};
+                     {2, 1}};
 
         int[][] result = new MatrixMultSequential().computeMatrixMult(A, B);
 
