@@ -83,6 +83,7 @@ public class StrassenSequential {
      * @param rows the number of rows in the matrix
      * @param cols the number of cols in the matrix
      * @return the size of the matrix
+     *         that satisfies the 2^n size requirement of Strassen's
      */
     public int calcSize(int rows, int cols){
         int newRows, newCols;
