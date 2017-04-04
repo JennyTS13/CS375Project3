@@ -1,18 +1,40 @@
+/*
+ * File:    StrassenSequential.java
+ * Authors: Charlie Beck, Phoebe Hughes, Tiffany Lam, Jenny Lin
+ * Date:    April 10, 2017
+ * Project: 3
+ */
+
 /**
- * Created by jslin on 4/4/17.
+ * This class computes the product of multiplying to matrices.
+ *
+ * The algorithm uses Strassen's Method,
+ * recursively dividing the matrices into submatrices,
+ * and calculating product arrays to calculate the final product
+ * of the two given matrices
  */
 public class StrassenSequential {
 
+    /**
+     * Calculates the product of multiplying two matrices
+     *
+     * @param A the first matrix
+     * @param B the second matrix
+     * @return  the result of multiplying the two matrices
+     */
     public int[][] computeMatrixMult(int[][] A, int[][] B) {
 
         int[][] result = new int[A.length][A.length];
 
+        /**
+         * The size of the sub-matrices
+         */
         int matrixSize = calcSize(A.length, A[0].length)/2;
 
-        if (A.length == 1){
+        if (A.length == 1) {
             result[0][0] = A[0][0] * B[0][0];
-        } else {
-
+        }
+        else {
             int[][] a11 = new int[matrixSize][matrixSize];
             int[][] a12 = new int[matrixSize][matrixSize];
             int[][] a21 = new int[matrixSize][matrixSize];
@@ -22,6 +44,7 @@ public class StrassenSequential {
             int[][] b21 = new int[matrixSize][matrixSize];
             int[][] b22 = new int[matrixSize][matrixSize];
 
+            // padding with 0s
             for (int i = 0; i < matrixSize; i++) {
                 for (int j = 0; j < matrixSize; j++) {
                     a11[i][j] = (i < A.length && j < A[0].length) ? A[i][j] : 0;
@@ -53,6 +76,14 @@ public class StrassenSequential {
         return result;
     }
 
+    /**
+     * The smallest 2^n value that is
+     * greater than the largest dimension of either of the given two arrays
+     *
+     * @param rows the number of rows in the matrix
+     * @param cols the number of cols in the matrix
+     * @return the size of the matrix
+     */
     public int calcSize(int rows, int cols){
         int newRows, newCols;
         double rowExp = Math.log(rows)/Math.log(2);
@@ -62,6 +93,11 @@ public class StrassenSequential {
         return Math.max(newRows, newCols);
     }
 
+    /**
+     * Prints out the matrix
+     *
+     * @param matrix the given matrix
+     */
     public void printMatrix(int[][] matrix){
         for(int i = 0; i < matrix.length; i++){
             for(int j = 0; j < matrix[0].length; j++) {
@@ -72,21 +108,23 @@ public class StrassenSequential {
         System.out.println();
     }
 
+    /**
+     * Used to test Strassen's method
+     *
+     * @param args
+     */
     public static void main(String[] args){
         StrassenSequential mult = new StrassenSequential();
         int[][] A = {{1, 2},
-                {2, 1},
-                {3, 4}};
+                     {2, 1},
+                     {3, 4}};
 
         int[][] B = {{1, 2, 4},
-                {2, 1, 2}};
+                     {2, 1, 2}};
 
         mult.printMatrix(A);
         mult.printMatrix(B);
 
-
         mult.computeMatrixMult(A, B);
-
-//        System.out.println(mult.calcSize(2, 5));
     }
 }
