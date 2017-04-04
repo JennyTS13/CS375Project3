@@ -1,5 +1,12 @@
+/*
+ * File:    StrassenSequential.java
+ * Authors: Charlie Beck, Phoebe Hughes, Tiffany Lam, Jenny Lin
+ * Date:    April 10, 2017
+ * Project: 3
+ */
+
 /**
- * Created by jslin on 4/4/17.
+ *
  */
 public class StrassenSequential {
 
@@ -15,7 +22,7 @@ public class StrassenSequential {
         int[][] b21 = new int[matrixSize][matrixSize];
         int[][] b22 = new int[matrixSize][matrixSize];
 
-        for(int i = 0; i < matrixSize; i++){
+        for(int i = 0; i < matrixSize; i++) {
             for(int j = 0; j < matrixSize; j++){
                 a11[i][j] = (i < A.length && j < A[0].length) ? A[i][j] : 0;
                 a12[i][j] = (i < A.length && j + matrixSize < A[0].length) ?
@@ -46,7 +53,7 @@ public class StrassenSequential {
         return result;
     }
 
-    public int calcSize(int rows, int cols){
+    public int calcSize(int rows, int cols) {
         int newRows, newCols;
         double rowExp = Math.log(rows)/Math.log(2);
         double colExp = Math.log(cols)/Math.log(2);
@@ -55,30 +62,28 @@ public class StrassenSequential {
         return Math.max(newRows, newCols);
     }
 
-    public void printMatrix(int[][] matrix){
+    public void printMatrix(int[][] matrix) {
         for(int i = 0; i < matrix.length; i++){
             for(int j = 0; j < matrix[0].length; j++) {
                 System.out.print(matrix[i][j] + " ");
             }
             System.out.println();
         }
+        System.out.println();
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         StrassenSequential mult = new StrassenSequential();
         int[][] A = {{1, 2},
-                {2, 1},
-                {3, 4}};
+                     {2, 1},
+                     {3, 4}};
 
         int[][] B = {{1, 2, 4},
-                {2, 1, 2}};
+                     {2, 1, 2}};
 
         mult.printMatrix(A);
         mult.printMatrix(B);
 
-
         mult.computeMatrixMult(A, B);
-
-//        System.out.println(mult.calcSize(2, 5));
     }
 }
