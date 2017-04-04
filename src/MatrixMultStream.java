@@ -5,9 +5,7 @@
  * Project: 3
  */
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
-import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -28,6 +26,7 @@ public class MatrixMultStream {
         return Arrays.stream(A)
                      .map(row -> range(0, B[0].length)
                              .map(rowIndex -> range(0, B.length)
+                                     .parallel()
                                      .map(colIndex -> row[colIndex]*B[colIndex][rowIndex])
                                      .sum()));
     }
