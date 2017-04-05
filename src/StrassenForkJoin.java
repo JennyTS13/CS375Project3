@@ -58,19 +58,7 @@ public class StrassenForkJoin implements MatrixMult {
      * @param args
      */
     public static void main(String[] args) {
-        int[][] A = {{1, 2, 6},
-                     {2, 1, 8}};
-
-        int[][] B = {{1, 2},
-                     {1, 2},
-                     {2, 1}};
-
-        Timer.start();
-        int[][] result = (new StrassenForkJoin()).computeMatrixMult(A, B);
-        Timer.stop();
-
-        MatrixUtil.printMatrix(result);
-        System.out.println("Total time: " + Timer.getRuntime());
+        MatrixUtil.testMatrixMult(new StrassenForkJoin());
     }
 
 }
