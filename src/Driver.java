@@ -29,13 +29,6 @@ public class Driver {
             }
         }
     }
-    public static void main(String[] args) throws Exception {
-        System.out.println("Number of processors: " + NUM_PROCESSORS);
-//        initialize(A, B);
-        test("Sequential version", new StrassenSequential());
-        test("Parallel streams version", new MatrixMultStream());
-
-    }
 
     private static void test(String version, MatrixMult m) throws Exception {
         // warm up
@@ -67,5 +60,11 @@ public class Driver {
         System.out.println();
     }
 
+    public static void main(String[] args) throws Exception {
+        System.out.println("Number of processors: " + NUM_PROCESSORS);
+//        initialize(A, B);
+        test("Sequential version", new StrassenSequential());
+        test("Parallel streams version", new MatrixMultStream());
+    }
 
 }
