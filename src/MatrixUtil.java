@@ -174,4 +174,24 @@ public class MatrixUtil {
         }
         return result;
     }
+
+    /**
+     * Tests the matrix multiplier, printing out the results
+     * @param matrixMult the matrix multiplier used to multiply the matrices
+     */
+    public static void testMatrixMult(MatrixMult matrixMult){
+        int[][] A = {{1, 2, 6},
+                {2, 1, 8}};
+
+        int[][] B = {{1, 2},
+                {1, 2},
+                {2, 1}};
+
+        Timer.start();
+        int[][] result = matrixMult.computeMatrixMult(A, B);
+        Timer.stop();
+
+        MatrixUtil.printMatrix(result);
+        System.out.println("Total time: " + Timer.getRuntime());
+    }
 }
