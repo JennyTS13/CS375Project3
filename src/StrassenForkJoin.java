@@ -25,8 +25,9 @@ public class StrassenForkJoin implements MatrixMult {
     @Override
     public int[][] computeMatrixMult(int[][] A, int[][] B) {
         int[][] result = new int[A.length][A.length];
+
         ForkJoinPool pool = new ForkJoinPool();
-        pool.invoke(new MatrixMultAction(A, B));
+        pool.invoke(new MatrixMultAction(A, B, result));
         return result;
     }
 
@@ -34,10 +35,12 @@ public class StrassenForkJoin implements MatrixMult {
         private static final int THRESHOLD = 100;
         private int[][] a, b, result;
 
-        public MatrixMultAction(int[][] A, int[][] B) {
+        public MatrixMultAction(int[][] A, int[][] B, int[][] r) {
             a = A;
             b = B;
+            result = r;
         }
+
         @Override
         protected void compute() {
             //The size of the sub-matrices
@@ -46,7 +49,7 @@ public class StrassenForkJoin implements MatrixMult {
             if (submatrixSize <= THRESHOLD) {   // do it sequentially
                 result = new StrassenSequential().computeMatrixMult(a, b);
             }
-            else {  // fork the work into tasks for other threads
+            else {
 
             }
         }

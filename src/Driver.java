@@ -65,6 +65,7 @@ public class Driver {
 //        initialize(A, B);
         test("Sequential version", new StrassenSequential());
         test("Parallel streams version", new MatrixMultStream());
+//        test("Fork-join version", new StrassenForkJoin());
     }
 
 }
