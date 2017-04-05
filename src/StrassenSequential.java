@@ -146,7 +146,7 @@ public class StrassenSequential {
         int[][] result = computeMatrixMult(A, B);
         Timer.stop();
 
-        MatrixUtil.printMatrix(result);
+//        MatrixUtil.printMatrix(result);
         System.out.println("Total time: " + Timer.getRuntime());
     }
 }
