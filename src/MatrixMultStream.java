@@ -14,14 +14,14 @@ import static java.util.stream.IntStream.range;
 /**
  * This class computes the product of multiplying to matrices using streams.
  */
-public class MatrixMultStream implements MatrixMult{
+public class MatrixMultStream implements MatrixMult {
 
     /**
      * Computes the result of multiplying two 2D arrays
      *
      * @param   A the first 2d array
      * @param   B the second 2d array
-     * @return  the resulting array created
+     * @return  the resulting multiplication matrix
      */
     @Override
     public int[][] computeMatrixMult(int[][] A, int[][] B) {

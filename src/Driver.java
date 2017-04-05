@@ -33,6 +33,7 @@ public class Driver {
         System.out.println("Number of processors: " + NUM_PROCESSORS);
 //        initialize(A, B);
         test("Sequential version", new StrassenSequential());
+        test("Parallel streams version", new MatrixMultStream());
 
     }
 
