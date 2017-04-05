@@ -44,7 +44,7 @@ public class StrassenSequential {
             int[][] c00, c01, c10, c11;
             int[][] m1, m2, m3, m4, m5, m6, m7;
 
-            if(A.length == submatrixSize && B.length == submatrixSize){
+            if(A.length == submatrixSize*2 && B.length == submatrixSize*2){
                 for (int i = 0; i < submatrixSize; i++) {
                     for (int j = 0; j < submatrixSize; j++) {
                         a00[i][j] = A[i][j];
