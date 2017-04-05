@@ -26,6 +26,7 @@ public class StrassenForkJoin implements MatrixMult {
     public int[][] computeMatrixMult(int[][] A, int[][] B) {
         int[][] result = new int[A.length][A.length];
         ForkJoinPool pool = new ForkJoinPool();
+        pool.invoke(new MatrixMultAction(A, B));
         return result;
     }
 
