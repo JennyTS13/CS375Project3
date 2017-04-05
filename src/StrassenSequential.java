@@ -23,97 +23,98 @@ public class StrassenSequential {
      * @return  the result of multiplying the two matrices
      */
     public static int[][] computeMatrixMult(int[][] A, int[][] B) {
-
         int[][] result = new int[A.length][A.length];
 
         //The size of the sub-matrices
-        int matrixSize = calcSize(A.length, A[0].length)/2;
+        int submatrixSize = calcSize(A.length, A[0].length)/2;
 
-        if (matrixSize <= 8) {
+        if (submatrixSize <= 100) {
             result = MatrixMultSequential.computeMatrixMult(A, B);
         }
         else {
-            int[][] a11 = new int[matrixSize][matrixSize];
-            int[][] a12 = new int[matrixSize][matrixSize];
-            int[][] a21 = new int[matrixSize][matrixSize];
-            int[][] a22 = new int[matrixSize][matrixSize];
-            int[][] b11 = new int[matrixSize][matrixSize];
-            int[][] b12 = new int[matrixSize][matrixSize];
-            int[][] b21 = new int[matrixSize][matrixSize];
-            int[][] b22 = new int[matrixSize][matrixSize];
+            int[][] a00 = new int[submatrixSize][submatrixSize];
+            int[][] a01 = new int[submatrixSize][submatrixSize];
+            int[][] a10 = new int[submatrixSize][submatrixSize];
+            int[][] a11 = new int[submatrixSize][submatrixSize];
+            int[][] b00 = new int[submatrixSize][submatrixSize];
+            int[][] b01 = new int[submatrixSize][submatrixSize];
+            int[][] b10 = new int[submatrixSize][submatrixSize];
+            int[][] b11 = new int[submatrixSize][submatrixSize];
 
-            int[][] c11, c12, c21, c22;
+            int[][] c00, c01, c10, c11;
             int[][] m1, m2, m3, m4, m5, m6, m7;
 
-            if(A.length == matrixSize && B.length == matrixSize){
-                for (int i = 0; i < matrixSize; i++) {
-                    for (int j = 0; j < matrixSize; j++) {
-                        a11[i][j] = A[i][j];
-                        a12[i][j] = A[i][j + matrixSize];
-                        a21[i][j] = A[i + matrixSize][j];
-                        a22[i][j] = A[i + matrixSize][j + matrixSize];
-                        b11[i][j] = B[i][j];
-                        b12[i][j] = B[i][j + matrixSize];
-                        b21[i][j] = B[i + matrixSize][j];
-                        b22[i][j] = B[i + matrixSize][j + matrixSize];
+            if(A.length == submatrixSize && B.length == submatrixSize){
+                for (int i = 0; i < submatrixSize; i++) {
+                    for (int j = 0; j < submatrixSize; j++) {
+                        a00[i][j] = A[i][j];
+                        a01[i][j] = A[i][j + submatrixSize];
+                        a10[i][j] = A[i + submatrixSize][j];
+                        a11[i][j] = A[i + submatrixSize][j + submatrixSize];
+                        b00[i][j] = B[i][j];
+                        b01[i][j] = B[i][j + submatrixSize];
+                        b10[i][j] = B[i + submatrixSize][j];
+                        b11[i][j] = B[i + submatrixSize][j + submatrixSize];
                     }
                 }
             }
             // padding with 0s
             else {
-                for (int i = 0; i < matrixSize; i++) {
-                    for (int j = 0; j < matrixSize; j++) {
-                        a11[i][j] = (i < A.length && j < A[0].length) ? A[i][j] : 0;
-                        a12[i][j] = (i < A.length && j + matrixSize < A[0].length) ?
-                                A[i][j + matrixSize] : 0;
-                        a21[i][j] = (i + matrixSize < A.length && j < A[0].length) ?
-                                A[i + matrixSize][j] : 0;
-                        a22[i][j] = (i + matrixSize < A.length && j + matrixSize < A[0].length) ?
-                                A[i + matrixSize][j + matrixSize] : 0;
-                        b11[i][j] = (i < B.length && j < B[0].length) ? B[i][j] : 0;
-                        b12[i][j] = (i < B.length && j + matrixSize < B[0].length) ?
-                                B[i][j + matrixSize] : 0;
-                        b21[i][j] = (i + matrixSize < B.length && j < B[0].length) ?
-                                B[i + matrixSize][j] : 0;
-                        b22[i][j] = (i + matrixSize < B.length && j + matrixSize < B[0].length) ?
-                                B[i + matrixSize][j + matrixSize] : 0;
+                for (int i = 0; i < submatrixSize; i++) {
+                    for (int j = 0; j < submatrixSize; j++) {
+                        a00[i][j] = (i < A.length && j < A[0].length) ? A[i][j] : 0;
+                        a01[i][j] = (i < A.length && j + submatrixSize < A[0].length) ?
+                                A[i][j + submatrixSize] : 0;
+                        a10[i][j] = (i + submatrixSize < A.length && j < A[0].length) ?
+                                A[i + submatrixSize][j] : 0;
+                        a11[i][j] = (i + submatrixSize < A.length &&
+                                j + submatrixSize < A[0].length) ?
+                                A[i + submatrixSize][j + submatrixSize] : 0;
+                        b00[i][j] = (i < B.length && j < B[0].length) ? B[i][j] : 0;
+                        b01[i][j] = (i < B.length && j + submatrixSize < B[0].length) ?
+                                B[i][j + submatrixSize] : 0;
+                        b10[i][j] = (i + submatrixSize < B.length && j < B[0].length) ?
+                                B[i + submatrixSize][j] : 0;
+                        b11[i][j] = (i + submatrixSize < B.length &&
+                                j + submatrixSize < B[0].length) ?
+                                B[i + submatrixSize][j + submatrixSize] : 0;
                     }
                 }
             }
-            m1 = computeMatrixMult(MatrixUtil.addMatrices(a11, a22),
-                    MatrixUtil.addMatrices(b11, b22));
-            m2 = computeMatrixMult(MatrixUtil.addMatrices(a21, a22), b11);
-            m3 = computeMatrixMult(a11, MatrixUtil.subtractMatrices(b12, b22));
-            m4 = computeMatrixMult(a22, MatrixUtil.subtractMatrices(b21, b11));
-            m5 = computeMatrixMult(MatrixUtil.addMatrices(a11, a12), b22);
-            m6 = computeMatrixMult(MatrixUtil.subtractMatrices(a21, a11),
-                    MatrixUtil.addMatrices(b11, b12));
-            m7 = computeMatrixMult(MatrixUtil.subtractMatrices(a12, a22),
-                    MatrixUtil.addMatrices(b21, b22));
+            m1 = computeMatrixMult(MatrixUtil.addMatrices(a00, a11),
+                    MatrixUtil.addMatrices(b00, b11));
+            m2 = computeMatrixMult(MatrixUtil.addMatrices(a10, a11), b00);
+            m3 = computeMatrixMult(a00, MatrixUtil.subtractMatrices(b01, b11));
+            m4 = computeMatrixMult(a11, MatrixUtil.subtractMatrices(b10, b00));
+            m5 = computeMatrixMult(MatrixUtil.addMatrices(a00, a01), b11);
+            m6 = computeMatrixMult(MatrixUtil.subtractMatrices(a10, a00),
+                    MatrixUtil.addMatrices(b00, b01));
+            m7 = computeMatrixMult(MatrixUtil.subtractMatrices(a01, a11),
+                    MatrixUtil.addMatrices(b10, b11));
 
-            c11 = MatrixUtil.addMatrices(MatrixUtil.subtractMatrices(
+            c00 = MatrixUtil.addMatrices(MatrixUtil.subtractMatrices(
                     MatrixUtil.addMatrices(m1, m4), m5), m7);
-            c12 = MatrixUtil.addMatrices(m3, m5);
-            c21 = MatrixUtil.addMatrices(m2, m4);
-            c22 = MatrixUtil.addMatrices(MatrixUtil.addMatrices(
+            c01 = MatrixUtil.addMatrices(m3, m5);
+            c10 = MatrixUtil.addMatrices(m2, m4);
+            c11 = MatrixUtil.addMatrices(MatrixUtil.addMatrices(
                     MatrixUtil.subtractMatrices(m1, m2), m3), m6);
 
             for(int i = 0; i < result.length; i++){
                 for(int j = 0; j < result[0].length; j++){
-                    if(i < matrixSize) {
-                        if(j < matrixSize) {
-                            result[i][j] = c11[i][j];
+                    if(i < submatrixSize) {
+                        if(j < submatrixSize) {
+                            result[i][j] = c00[i][j];
                         }
                         else{
-                            result[i][j] = c12[i][j-matrixSize];
+                            result[i][j] = c01[i][j-submatrixSize];
                         }
                     }
                     else {
-                        if(j < matrixSize) {
-                            result[i][j] = c21[i-matrixSize][j];
+                        if(j < submatrixSize) {
+                            result[i][j] = c10[i-submatrixSize][j];
                         }
                         else{
-                            result[i][j] = c22[i-matrixSize][j-matrixSize];
+                            result[i][j] = c11[i-submatrixSize][j-submatrixSize];
                         }
                     }
                 }
@@ -150,16 +151,21 @@ public class StrassenSequential {
      * @param args
      */
     public static void main(String[] args){
-        int[][] A = {{1, 2},
-                     {2, 1},
-                     {3, 4}};
+        int[][] A = new int[1500][1000];
+        int[][] B = new int[1000][1500];
 
-        int[][] B = {{1, 2, 4},
-                     {2, 1, 2}};
+        for(int i = 0; i < A.length; i++){
+            for(int j = 0; j < A[0].length; j++){
+                A[i][j] = i + j;
+                B[j][i] = j + i;
+            }
+        }
 
-        MatrixUtil.printMatrix(A);
-        MatrixUtil.printMatrix(B);
+        Timer.start();
+        int[][] result = computeMatrixMult(A, B);
+        Timer.stop();
 
-        MatrixUtil.printMatrix(computeMatrixMult(A, B));
+//        MatrixUtil.printMatrix(result);
+        System.out.println("Total time: " + Timer.getRuntime());
     }
 }

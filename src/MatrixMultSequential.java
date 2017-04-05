@@ -35,18 +35,24 @@ public class MatrixMultSequential {
     /**
      * Used for testing the mult method
      *
-     * @param args
+     * @param args command line arges
      */
     public static void main(String[] args) {
-        int[][] A = {{1, 2},
-                {2, 1},
-                {3, 4}};
+        int[][] A = new int[1500][1000];
+        int[][] B = new int[1000][1500];
 
-        int[][] B = {{1, 2, 4},
-                {2, 1, 2}};
+        for(int i = 0; i < A.length; i++){
+            for(int j = 0; j < A[0].length; j++){
+                A[i][j] = i + j;
+                B[j][i] = j + i;
+            }
+        }
 
+        Timer.start();
         int[][] result = computeMatrixMult(A, B);
+        Timer.stop();
 
-        MatrixUtil.printMatrix(result);
+//        MatrixUtil.printMatrix(result);
+        System.out.println("Total time: " + Timer.getRuntime());
     }
 }
