@@ -18,8 +18,8 @@ public class StrassenSequential {
     /**
      * Calculates the product of multiplying two matrices
      *
-     * @param A the first matrix
-     * @param B the second matrix
+     * @param   A the first matrix
+     * @param   B the second matrix
      * @return  the result of multiplying the two matrices
      */
     public static int[][] computeMatrixMult(int[][] A, int[][] B) {
@@ -81,6 +81,8 @@ public class StrassenSequential {
                     }
                 }
             }
+
+            // calculates product arrays
             m1 = computeMatrixMult(MatrixUtil.addMatrices(a00, a11),
                     MatrixUtil.addMatrices(b00, b11));
             m2 = computeMatrixMult(MatrixUtil.addMatrices(a10, a11), b00);

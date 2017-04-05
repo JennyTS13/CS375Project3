@@ -12,9 +12,10 @@ public class MatrixUtil {
 
     /**
      * Returns the sum of the two input matrices
-     * @param A the first matrix
-     * @param B the second matrix
-     * @return Sum of the two input matrices
+     *
+     * @param   A the first matrix
+     * @param   B the second matrix
+     * @return  Sum of the two input matrices
      */
     public static int[][] addMatrices(int[][] A, int[][] B){
         int[][] result = new int[A.length][A[0].length];
@@ -28,9 +29,10 @@ public class MatrixUtil {
 
     /**
      * Returns the difference of the two input matrices
-     * @param A the first matrix
-     * @param B the second matrix
-     * @return Difference of the two input matrices (A - B)
+     *
+     * @param   A the first matrix
+     * @param   B the second matrix
+     * @return  Difference of the two input matrices (A - B)
      */
     public static int[][] subtractMatrices(int[][] A, int[][] B){
         int[][] result = new int[A.length][A[0].length];
@@ -61,10 +63,10 @@ public class MatrixUtil {
      * The smallest 2^n value that is
      * greater than the largest dimension of either of the given two arrays
      *
-     * @param rows the number of rows in the matrix
-     * @param cols the number of cols in the matrix
-     * @return the size of the matrix
-     *         that satisfies the 2^n size requirement of Strassen's
+     * @param   rows the number of rows in the matrix
+     * @param   cols the number of cols in the matrix
+     * @return  the size of the matrix
+     *          that satisfies the 2^n size requirement of Strassen's
      */
     public static int calcSize(int rows, int cols){
         int newRows, newCols;

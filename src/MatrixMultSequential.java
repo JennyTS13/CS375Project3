@@ -15,8 +15,8 @@ public class MatrixMultSequential {
     /**
      * Calculates the product of multiplying two matrices
      *
-     * @param A the first matrix
-     * @param B the second matrix
+     * @param   A the first matrix
+     * @param   B the second matrix
      * @return  the result of multiplying the two matrices
      */
     public static int[][] computeMatrixMult(int[][] A, int[][] B) {

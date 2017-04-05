@@ -18,9 +18,10 @@ public class MatrixMultStream {
 
     /**
      * Computes the result of multiplying two 2D arrays
-     * @param A the first 2d array
-     * @param B the second 2d array
-     * @return the resulting stream created
+     *
+     * @param   A the first 2d array
+     * @param   B the second 2d array
+     * @return  the resulting stream created
      */
     public Stream<IntStream> computeMatrixMult(int[][] A, int[][] B) {
         return Arrays.stream(A)
@@ -33,6 +34,7 @@ public class MatrixMultStream {
 
     /**
      * Used for testing the computeMatrixMult method
+     *
      * @param args
      */
     public static void main(String[] args) {
