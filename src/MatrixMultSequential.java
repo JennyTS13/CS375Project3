@@ -47,11 +47,6 @@ public class MatrixMultSequential {
 
         int[][] result = computeMatrixMult(A, B);
 
-        for(int i = 0; i < result.length; i++) {
-            for(int j = 0; j < result[i].length; j++) {
-                System.out.print(result[i][j] + " ");
-            }
-            System.out.println();
-        }
+        MatrixUtil.printMatrix(result);
     }
 }
