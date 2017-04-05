@@ -8,8 +8,8 @@
 /**
  * This class computes the product of multiplying to matrices.
  *
- * The algorithm is naive, going through each element of each matrix sequentially
- * to calculate the product
+ * This is a brute force algorithm for multiplying two matrices
+ * it goes through each element of each matrix sequentially to calculate the product
  */
 public class MatrixMultSequential {
     /**
