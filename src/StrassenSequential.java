@@ -22,64 +22,36 @@ public class StrassenSequential implements MatrixMult {
         //The size of the sub-matrices
         int submatrixSize = MatrixUtil.calcSize(A.length, A[0].length)/2;
 
-        if (submatrixSize <= 100) {
+        if (submatrixSize <= 64) {
             result = MatrixUtil.multMatrices(A, B);
         }
         else {
-            int[][] a00 = new int[submatrixSize][submatrixSize];
-            int[][] a01 = new int[submatrixSize][submatrixSize];
-            int[][] a10 = new int[submatrixSize][submatrixSize];
-            int[][] a11 = new int[submatrixSize][submatrixSize];
-            int[][] b00 = new int[submatrixSize][submatrixSize];
-            int[][] b01 = new int[submatrixSize][submatrixSize];
-            int[][] b10 = new int[submatrixSize][submatrixSize];
-            int[][] b11 = new int[submatrixSize][submatrixSize];
-
+            int[][][] subMatricesA, subMatricesB;
+            int[][] a00, a01, a10, a11, b00, b01, b10, b11;
             int[][] c00, c01, c10, c11;
             int[][] m1, m2, m3, m4, m5, m6, m7;
 
             // matrix is already of size 2^n by 2^n
             if(A.length == submatrixSize*2 && B.length == submatrixSize*2) {
                 //subdivide each matrix into 4 submatrices
-                for (int i = 0; i < submatrixSize; i++) {
-                    for (int j = 0; j < submatrixSize; j++) {
-                        a00[i][j] = A[i][j];
-                        a01[i][j] = A[i][j + submatrixSize];
-                        a10[i][j] = A[i + submatrixSize][j];
-                        a11[i][j] = A[i + submatrixSize][j + submatrixSize];
-
-                        b00[i][j] = B[i][j];
-                        b01[i][j] = B[i][j + submatrixSize];
-                        b10[i][j] = B[i + submatrixSize][j];
-                        b11[i][j] = B[i + submatrixSize][j + submatrixSize];
-                    }
-                }
+                subMatricesA = MatrixUtil.subDivideMatrix(A);
+                subMatricesB = MatrixUtil.subDivideMatrix(B);
             }
             // subdivide each matrix into 4 matrices
             // padding with 0s to obtain matrix of size 2^n by 2^n
             else {
-                for (int i = 0; i < submatrixSize; i++) {
-                    for (int j = 0; j < submatrixSize; j++) {
-                        a00[i][j] = (i < A.length && j < A[0].length) ? A[i][j] : 0;
-                        a01[i][j] = (i < A.length && j + submatrixSize < A[0].length) ?
-                                A[i][j + submatrixSize] : 0;
-                        a10[i][j] = (i + submatrixSize < A.length && j < A[0].length) ?
-                                A[i + submatrixSize][j] : 0;
-                        a11[i][j] = (i + submatrixSize < A.length &&
-                                j + submatrixSize < A[0].length) ?
-                                A[i + submatrixSize][j + submatrixSize] : 0;
-
-                        b00[i][j] = (i < B.length && j < B[0].length) ? B[i][j] : 0;
-                        b01[i][j] = (i < B.length && j + submatrixSize < B[0].length) ?
-                                B[i][j + submatrixSize] : 0;
-                        b10[i][j] = (i + submatrixSize < B.length && j < B[0].length) ?
-                                B[i + submatrixSize][j] : 0;
-                        b11[i][j] = (i + submatrixSize < B.length &&
-                                j + submatrixSize < B[0].length) ?
-                                B[i + submatrixSize][j + submatrixSize] : 0;
-                    }
-                }
+                subMatricesA = MatrixUtil.subDivideMatrix(MatrixUtil.padMatrixZeroes(A, submatrixSize*2));
+                subMatricesB = MatrixUtil.subDivideMatrix(MatrixUtil.padMatrixZeroes(B, submatrixSize*2));
             }
+
+            a00 = subMatricesA[0];
+            a01 = subMatricesA[1];
+            a10 = subMatricesA[2];
+            a11 = subMatricesA[3];
+            b00 = subMatricesB[0];
+            b01 = subMatricesB[1];
+            b10 = subMatricesB[2];
+            b11 = subMatricesB[3];
 
             // calculates product arrays
             m1 = computeMatrixMult(MatrixUtil.addMatrices(a00, a11),
@@ -102,26 +74,7 @@ public class StrassenSequential implements MatrixMult {
                     MatrixUtil.subtractMatrices(m1, m2), m3), m6);
 
             // join submatrices to get final multiplication matrix result
-            for(int i = 0; i < result.length; i++) {
-                for(int j = 0; j < result[0].length; j++) {
-                    if(i < submatrixSize) {
-                        if(j < submatrixSize) {
-                            result[i][j] = c00[i][j];
-                        }
-                        else {
-                            result[i][j] = c01[i][j-submatrixSize];
-                        }
-                    }
-                    else {
-                        if(j < submatrixSize) {
-                            result[i][j] = c10[i-submatrixSize][j];
-                        }
-                        else {
-                            result[i][j] = c11[i-submatrixSize][j-submatrixSize];
-                        }
-                    }
-                }
-            }
+            result = MatrixUtil.joinMatrices(c00, c01, c10, c11, result.length);
         }
 
         return result;
