@@ -8,7 +8,7 @@
 /**
  * This class computes the product of multiplying to matrices.
  *
- * The algorithm uses Strassen's Method,
+ * The algorithm uses Strassen's Algorithm,
  * recursively dividing the matrices into submatrices,
  * and calculating product arrays to calculate the final product
  * of the two given matrices
@@ -26,7 +26,7 @@ public class StrassenSequential {
         int[][] result = new int[A.length][A.length];
 
         //The size of the sub-matrices
-        int submatrixSize = calcSize(A.length, A[0].length)/2;
+        int submatrixSize = MatrixUtil.calcSize(A.length, A[0].length)/2;
 
         if (submatrixSize <= 100) {
             result = MatrixMultSequential.computeMatrixMult(A, B);
@@ -123,27 +123,6 @@ public class StrassenSequential {
 
         return result;
     }
-
-
-    /**
-     * The smallest 2^n value that is
-     * greater than the largest dimension of either of the given two arrays
-     *
-     * @param rows the number of rows in the matrix
-     * @param cols the number of cols in the matrix
-     * @return the size of the matrix
-     *         that satisfies the 2^n size requirement of Strassen's
-     */
-    public static int calcSize(int rows, int cols){
-        int newRows, newCols;
-        double rowExp = Math.log(rows)/Math.log(2);
-        double colExp = Math.log(cols)/Math.log(2);
-        newRows = (rowExp == (int)rowExp)? rows : (int)Math.pow(2, (int)(rowExp+1));
-        newCols = (colExp == (int)colExp)? cols : (int)Math.pow(2, (int)(colExp+1));
-        return Math.max(newRows, newCols);
-    }
-
-
 
     /**
      * Used to test Strassen's method

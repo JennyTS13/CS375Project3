@@ -56,4 +56,22 @@ public class MatrixUtil {
         }
         System.out.println();
     }
+
+    /**
+     * The smallest 2^n value that is
+     * greater than the largest dimension of either of the given two arrays
+     *
+     * @param rows the number of rows in the matrix
+     * @param cols the number of cols in the matrix
+     * @return the size of the matrix
+     *         that satisfies the 2^n size requirement of Strassen's
+     */
+    public static int calcSize(int rows, int cols){
+        int newRows, newCols;
+        double rowExp = Math.log(rows)/Math.log(2);
+        double colExp = Math.log(cols)/Math.log(2);
+        newRows = (rowExp == (int)rowExp)? rows : (int)Math.pow(2, (int)(rowExp+1));
+        newCols = (colExp == (int)colExp)? cols : (int)Math.pow(2, (int)(colExp+1));
+        return Math.max(newRows, newCols);
+    }
 }
