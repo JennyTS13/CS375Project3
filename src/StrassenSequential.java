@@ -44,6 +44,7 @@ public class StrassenSequential {
             int[][] c00, c01, c10, c11;
             int[][] m1, m2, m3, m4, m5, m6, m7;
 
+            // matrix is already of size 2^n by 2^n
             if(A.length == submatrixSize*2 && B.length == submatrixSize*2) {
                 for (int i = 0; i < submatrixSize; i++) {
                     for (int j = 0; j < submatrixSize; j++) {
@@ -58,7 +59,7 @@ public class StrassenSequential {
                     }
                 }
             }
-            // padding with 0s
+            // padding with 0s to obtain matrix of size 2^n by 2^n
             else {
                 for (int i = 0; i < submatrixSize; i++) {
                     for (int j = 0; j < submatrixSize; j++) {
@@ -94,6 +95,7 @@ public class StrassenSequential {
             m7 = computeMatrixMult(MatrixUtil.subtractMatrices(a01, a11),
                     MatrixUtil.addMatrices(b10, b11));
 
+            // resulting submatrices of final multiplication matrix
             c00 = MatrixUtil.addMatrices(MatrixUtil.subtractMatrices(
                     MatrixUtil.addMatrices(m1, m4), m5), m7);
             c01 = MatrixUtil.addMatrices(m3, m5);
@@ -101,6 +103,7 @@ public class StrassenSequential {
             c11 = MatrixUtil.addMatrices(MatrixUtil.addMatrices(
                     MatrixUtil.subtractMatrices(m1, m2), m3), m6);
 
+            // join submatrices to get final multiplication matrix result
             for(int i = 0; i < result.length; i++) {
                 for(int j = 0; j < result[0].length; j++) {
                     if(i < submatrixSize) {
