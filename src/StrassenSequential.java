@@ -13,23 +13,17 @@
  * and calculating product arrays to calculate the final product
  * of the two given matrices
  */
-public class StrassenSequential {
+public class StrassenSequential implements MatrixMult {
 
-    /**
-     * Calculates the product of multiplying two matrices
-     *
-     * @param   A the first matrix
-     * @param   B the second matrix
-     * @return  the result of multiplying the two matrices
-     */
-    public static int[][] computeMatrixMult(int[][] A, int[][] B) {
+    @Override
+    public int[][] computeMatrixMult(int[][] A, int[][] B) {
         int[][] result = new int[A.length][A.length];
 
         //The size of the sub-matrices
         int submatrixSize = MatrixUtil.calcSize(A.length, A[0].length)/2;
 
         if (submatrixSize <= 100) {
-            result = MatrixMultSequential.computeMatrixMult(A, B);
+            result = MatrixUtil.multMatrices(A, B);
         }
         else {
             int[][] a00 = new int[submatrixSize][submatrixSize];
@@ -139,21 +133,18 @@ public class StrassenSequential {
      * @param args
      */
     public static void main(String[] args) {
-        int[][] A = new int[1500][1000];
-        int[][] B = new int[1000][1500];
+        int[][] A = {{1, 2, 6},
+                     {2, 1, 8}};
 
-        for(int i = 0; i < A.length; i++){
-            for(int j = 0; j < A[0].length; j++) {
-                A[i][j] = i + j;
-                B[j][i] = j + i;
-            }
-        }
+        int[][] B = {{1, 2},
+                     {1, 2},
+                     {2, 1}};
 
         Timer.start();
-        int[][] result = computeMatrixMult(A, B);
+        int[][] result = (new StrassenSequential()).computeMatrixMult(A, B);
         Timer.stop();
 
-//        MatrixUtil.printMatrix(result);
+        MatrixUtil.printMatrix(result);
         System.out.println("Total time: " + Timer.getRuntime());
     }
 }

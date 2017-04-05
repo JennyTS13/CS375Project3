@@ -45,6 +45,26 @@ public class MatrixUtil {
     }
 
     /**
+     * Returns the product of the two input matrices
+     *
+     * @param   A the first matrix
+     * @param   B the second matrix
+     * @return  Product of the two input matrices (A * B)
+     */
+    public static int[][] multMatrices(int[][] A, int[][] B) {
+        int[][] result = new int[A.length][A.length];
+        for(int i = 0; i < A.length; i++) {
+            for(int j = 0; j < B[0].length; j++) {
+                result[i][j] = 0;
+                for(int k = 0; k < B.length; k++) {
+                    result[i][j] += A[i][k] * B[k][j];
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
      * Prints out the matrix
      *
      * @param matrix the given matrix
