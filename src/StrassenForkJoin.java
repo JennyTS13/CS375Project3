@@ -44,7 +44,7 @@ public class StrassenForkJoin implements MatrixMult {
             int submatrixSize = MatrixUtil.calcSize(a.length, a[0].length)/2;
 
             if (submatrixSize <= THRESHOLD) {   // do it sequentially
-                result = MatrixUtil.multMatrices(a, b);
+                result = new StrassenSequential().computeMatrixMult(a, b);
             }
             else {  // fork the work into tasks for other threads
 
