@@ -121,16 +121,16 @@ public class MatrixUtil {
 
     /**
      * Return matrix padded with 0's at the end of the input
-     * until we've reach the desired dimension (dimension x dimension matrix)
+     * until we've reach the desired dimension (matrixSize x matrixSize)
      *
      * @param   A 2D matrix to padd with 0's
-     * @param   dimension integer of desired matrix dimension
+     * @param   matrixSize integer of desired matrix dimension
      * @return  2D matrix of the input matrix padded with 0's
      */
-    public static int[][] padMatrixZeroes(int[][] A, int dimension) {
-        int[][] result = new int[dimension][dimension];
-        for (int i = 0; i < dimension; i++) {
-            for (int j = 0; j < dimension; j++) {
+    public static int[][] padMatrixZeroes(int[][] A, int matrixSize) {
+        int[][] result = new int[matrixSize][matrixSize];
+        for (int i = 0; i < matrixSize; i++) {
+            for (int j = 0; j < matrixSize; j++) {
                 result[i][j] = (i < A.length && j < A[0].length) ? A[i][j] : 0;
             }
         }
@@ -144,13 +144,13 @@ public class MatrixUtil {
      * @param   a01 2D matrix to copy into final matrix
      * @param   a10 2D matrix to copy into final matrix
      * @param   a11 2D matrix to copy into final matrix
-     * @param   dimension integer of desired matrix dimension
+     * @param   matrixSize integer of desired matrix dimension
      * @return  2D matrix of the 4 matrices joined together,
      *          cutting off at specified dimension
      */
     public static int[][] joinMatrices(int[][] a00, int[][] a01, int[][] a10, int[][] a11,
-                                       int dimension) {
-        int[][] result = new int[dimension][dimension];
+                                       int matrixSize) {
+        int[][] result = new int[matrixSize][matrixSize];
         int subMatrixSize = a00.length;
         for(int i = 0; i < result.length; i++) {
             for(int j = 0; j < result[0].length; j++) {
