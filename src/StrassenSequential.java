@@ -22,7 +22,7 @@ public class StrassenSequential {
      * @param B the second matrix
      * @return  the result of multiplying the two matrices
      */
-    public int[][] computeMatrixMult(int[][] A, int[][] B) {
+    public static int[][] computeMatrixMult(int[][] A, int[][] B) {
 
         int[][] result = new int[A.length][A.length];
 
@@ -32,7 +32,7 @@ public class StrassenSequential {
         int matrixSize = calcSize(A.length, A[0].length)/2;
 
         if (A.length == 1) {
-            result[0][0] = A[0][0] * B[0][0];
+            result = MatrixMultSequential.computeMatrixMult(A, B);
         }
         else {
             int[][] a11 = new int[matrixSize][matrixSize];
@@ -43,6 +43,17 @@ public class StrassenSequential {
             int[][] b12 = new int[matrixSize][matrixSize];
             int[][] b21 = new int[matrixSize][matrixSize];
             int[][] b22 = new int[matrixSize][matrixSize];
+            int[][] c11 = new int[matrixSize][matrixSize];
+            int[][] c12 = new int[matrixSize][matrixSize];
+            int[][] c21 = new int[matrixSize][matrixSize];
+            int[][] c22 = new int[matrixSize][matrixSize];
+            int[][] m1 = new int[matrixSize][matrixSize];
+            int[][] m2 = new int[matrixSize][matrixSize];
+            int[][] m3 = new int[matrixSize][matrixSize];
+            int[][] m4 = new int[matrixSize][matrixSize];
+            int[][] m5 = new int[matrixSize][matrixSize];
+            int[][] m6 = new int[matrixSize][matrixSize];
+            int[][] m7 = new int[matrixSize][matrixSize];
 
             // padding with 0s
             for (int i = 0; i < matrixSize; i++) {
@@ -63,18 +74,79 @@ public class StrassenSequential {
                             B[i + matrixSize][j + matrixSize] : 0;
                 }
             }
-            printMatrix(a11);
-            printMatrix(a12);
-            printMatrix(a21);
-            printMatrix(a22);
-            printMatrix(b11);
-            printMatrix(b12);
-            printMatrix(b21);
-            printMatrix(b22);
+            m1 = MatrixMultSequential.
+                    computeMatrixMult(addMatrices(a11, a22), addMatrices(b11, b22));
+            m2 = MatrixMultSequential.computeMatrixMult(addMatrices(a21, a22), b11);
+            m3 = MatrixMultSequential.computeMatrixMult(a11, subtractMatrices(b12, b22));
+            m4 = MatrixMultSequential.computeMatrixMult(a22, subtractMatrices(b21, b11));
+            m5 = MatrixMultSequential.computeMatrixMult(addMatrices(a11, a12), b22);
+            m6 = MatrixMultSequential.
+                    computeMatrixMult(subtractMatrices(a21, a11), addMatrices(b11, b12));
+            m7 = MatrixMultSequential.
+                    computeMatrixMult(subtractMatrices(a12, a22), addMatrices(b21, b22));
+
+            c11 = addMatrices(subtractMatrices(addMatrices(m1, m4), m5), m7);
+            c12 = addMatrices(m3, m5);
+            c21 = addMatrices(m2, m4);
+            c22 = addMatrices(addMatrices(subtractMatrices(m1, m2), m3), m6);
+
+            for(int i = 0; i < result.length; i++){
+                for(int j = 0; j < result[0].length; j++){
+                    if(i < matrixSize) {
+                        if(j < matrixSize) {
+                            result[i][j] = c11[i][j];
+                        }
+                        else{
+                            result[i][j] = c12[i][j-matrixSize];
+                        }
+                    }
+                    else {
+                        if(j < matrixSize) {
+                            result[i][j] = c21[i-matrixSize][j];
+                        }
+                        else{
+                            result[i][j] = c22[i-matrixSize][j-matrixSize];
+                        }
+                    }
+                }
+            }
         }
 
         return result;
     }
+
+    /**
+     * Returns the sum of the two input matrices
+     * @param A the first matrix
+     * @param B the second matrix
+     * @return Sum of the two input matrices
+     */
+    public static int[][] addMatrices(int[][] A, int[][] B){
+        int[][] result = new int[A.length][A[0].length];
+        for(int i = 0; i < A.length; i++){
+            for(int j = 0; j < A[0].length; j++){
+                result[i][j] = A[i][j] + B[i][j];
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Returns the difference of the two input matrices
+     * @param A the first matrix
+     * @param B the second matrix
+     * @return Difference of the two input matrices (A - B)
+     */
+    public static int[][] subtractMatrices(int[][] A, int[][] B){
+        int[][] result = new int[A.length][A[0].length];
+        for(int i = 0; i < A.length; i++){
+            for(int j = 0; j < A[0].length; j++){
+                result[i][j] = A[i][j] - B[i][j];
+            }
+        }
+        return result;
+    }
+
 
     /**
      * The smallest 2^n value that is
@@ -85,7 +157,7 @@ public class StrassenSequential {
      * @return the size of the matrix
      *         that satisfies the 2^n size requirement of Strassen's
      */
-    public int calcSize(int rows, int cols){
+    public static int calcSize(int rows, int cols){
         int newRows, newCols;
         double rowExp = Math.log(rows)/Math.log(2);
         double colExp = Math.log(cols)/Math.log(2);
@@ -99,7 +171,7 @@ public class StrassenSequential {
      *
      * @param matrix the given matrix
      */
-    public void printMatrix(int[][] matrix){
+    public static void printMatrix(int[][] matrix){
         for(int i = 0; i < matrix.length; i++){
             for(int j = 0; j < matrix[0].length; j++) {
                 System.out.print(matrix[i][j] + " ");
@@ -115,7 +187,6 @@ public class StrassenSequential {
      * @param args
      */
     public static void main(String[] args){
-        StrassenSequential mult = new StrassenSequential();
         int[][] A = {{1, 2},
                      {2, 1},
                      {3, 4}};
@@ -123,9 +194,9 @@ public class StrassenSequential {
         int[][] B = {{1, 2, 4},
                      {2, 1, 2}};
 
-        mult.printMatrix(A);
-        mult.printMatrix(B);
+        printMatrix(A);
+        printMatrix(B);
 
-        mult.computeMatrixMult(A, B);
+        printMatrix(computeMatrixMult(A, B));
     }
 }

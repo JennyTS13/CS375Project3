@@ -19,8 +19,8 @@ public class MatrixMultSequential {
      * @param B the second matrix
      * @return  the result of multiplying the two matrices
      */
-    public int[][] computeMatrixMult(int[][] A, int[][] B) {
-        int[][] result = new int[A.length][B[0].length];
+    public static int[][] computeMatrixMult(int[][] A, int[][] B) {
+        int[][] result = new int[A.length][A.length];
         for(int i = 0; i < A.length; i++) {
             for(int j = 0; j < B[0].length; j++) {
                 result[i][j] = 0;
@@ -39,12 +39,13 @@ public class MatrixMultSequential {
      */
     public static void main(String[] args) {
         int[][] A = {{1, 2},
-                     {2, 1}};
+                {2, 1},
+                {3, 4}};
 
-        int[][] B = {{1, 2},
-                     {2, 1}};
+        int[][] B = {{1, 2, 4},
+                {2, 1, 2}};
 
-        int[][] result = new MatrixMultSequential().computeMatrixMult(A, B);
+        int[][] result = computeMatrixMult(A, B);
 
         for(int i = 0; i < result.length; i++) {
             for(int j = 0; j < result[i].length; j++) {
