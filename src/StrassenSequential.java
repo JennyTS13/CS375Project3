@@ -44,7 +44,7 @@ public class StrassenSequential {
             int[][] c00, c01, c10, c11;
             int[][] m1, m2, m3, m4, m5, m6, m7;
 
-            if(A.length == submatrixSize*2 && B.length == submatrixSize*2){
+            if(A.length == submatrixSize*2 && B.length == submatrixSize*2) {
                 for (int i = 0; i < submatrixSize; i++) {
                     for (int j = 0; j < submatrixSize; j++) {
                         a00[i][j] = A[i][j];
@@ -101,13 +101,13 @@ public class StrassenSequential {
             c11 = MatrixUtil.addMatrices(MatrixUtil.addMatrices(
                     MatrixUtil.subtractMatrices(m1, m2), m3), m6);
 
-            for(int i = 0; i < result.length; i++){
-                for(int j = 0; j < result[0].length; j++){
+            for(int i = 0; i < result.length; i++) {
+                for(int j = 0; j < result[0].length; j++) {
                     if(i < submatrixSize) {
                         if(j < submatrixSize) {
                             result[i][j] = c00[i][j];
                         }
-                        else{
+                        else {
                             result[i][j] = c01[i][j-submatrixSize];
                         }
                     }
@@ -115,7 +115,7 @@ public class StrassenSequential {
                         if(j < submatrixSize) {
                             result[i][j] = c10[i-submatrixSize][j];
                         }
-                        else{
+                        else {
                             result[i][j] = c11[i-submatrixSize][j-submatrixSize];
                         }
                     }
@@ -131,12 +131,12 @@ public class StrassenSequential {
      *
      * @param args
      */
-    public static void main(String[] args){
+    public static void main(String[] args) {
         int[][] A = new int[1500][1000];
         int[][] B = new int[1000][1500];
 
         for(int i = 0; i < A.length; i++){
-            for(int j = 0; j < A[0].length; j++){
+            for(int j = 0; j < A[0].length; j++) {
                 A[i][j] = i + j;
                 B[j][i] = j + i;
             }
