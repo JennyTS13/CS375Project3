@@ -5,6 +5,9 @@
  * Project: 3
  */
 
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RecursiveAction;
+
 /**
  * This class computes the product of multiplying to matrices.
  *
@@ -22,7 +25,30 @@ public class StrassenForkJoin implements MatrixMult {
     @Override
     public int[][] computeMatrixMult(int[][] A, int[][] B) {
         int[][] result = new int[A.length][A.length];
+        ForkJoinPool pool = new ForkJoinPool();
         return result;
+    }
+
+    class MatrixMultAction extends RecursiveAction {
+        private static final int THRESHOLD = 100;
+        private int[][] a, b, result;
+
+        public MatrixMultAction(int[][] A, int[][] B) {
+            a = A;
+            b = B;
+        }
+        @Override
+        protected void compute() {
+            //The size of the sub-matrices
+            int submatrixSize = MatrixUtil.calcSize(a.length, a[0].length)/2;
+
+            if (submatrixSize <= THRESHOLD) {   // do it sequentially
+                result = MatrixUtil.multMatrices(a, b);
+            }
+            else {  // fork the work into tasks for other threads
+
+            }
+        }
     }
 
     /**
