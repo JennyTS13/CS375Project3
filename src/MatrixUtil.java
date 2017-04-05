@@ -101,8 +101,8 @@ public class MatrixUtil {
      * Return 4 2D matrices in the form of a 3D array of the 4 quadrants of the input
      * Assumption: input matrix is a square matrix with even dimensions
      *
-     * @param A 2D matrix to divide into fourths
-     * @return 3D array holding the 4 quarters of the input matrix
+     * @param   A 2D matrix to divide into fourths
+     * @return  3D array holding the 4 quarters of the input matrix
      */
     public static int[][][] subDivideMatrix(int[][] A){
         int subMatrixSize = A.length/2;
@@ -121,11 +121,11 @@ public class MatrixUtil {
 
     /**
      * Return matrix padded with 0's at the end of the input
-     * until we'vd reach the desired dimension (dimension x dimension matrix)
+     * until we've reach the desired dimension (dimension x dimension matrix)
      *
-     * @param A 2D matrix to padd with 0's
-     * @param dimension integer of desired matrix dimension
-     * @return 2D matrix of the input matrix padded with 0's
+     * @param   A 2D matrix to padd with 0's
+     * @param   dimension integer of desired matrix dimension
+     * @return  2D matrix of the input matrix padded with 0's
      */
     public static int[][] padMatrixZeroes(int[][] A, int dimension){
         int[][] result = new int[dimension][dimension];
@@ -140,16 +140,16 @@ public class MatrixUtil {
     /**
      * Returns a 2D matrix of the specified dimension made up of values from the
      * 4 input matrices.
-     * @param a00 2D matrix to copy into final matrix
-     * @param a01 2D matrix to copy into final matrix
-     * @param a10 2D matrix to copy into final matrix
-     * @param a11 2D matrix to copy into final matrix
-     * @param dimension integer of desired matrix dimension
-     * @return 2D matrix of the 4 matrices joined together,
-     *      cutting off at specified dimension
+     * @param   a00 2D matrix to copy into final matrix
+     * @param   a01 2D matrix to copy into final matrix
+     * @param   a10 2D matrix to copy into final matrix
+     * @param   a11 2D matrix to copy into final matrix
+     * @param   dimension integer of desired matrix dimension
+     * @return  2D matrix of the 4 matrices joined together,
+     *          cutting off at specified dimension
      */
     public static int[][] joinMatrices(int[][] a00, int[][] a01, int[][] a10, int[][] a11,
-                                       int dimension){
+                                       int dimension) {
         int[][] result = new int[dimension][dimension];
         int subMatrixSize = a00.length;
         for(int i = 0; i < result.length; i++) {

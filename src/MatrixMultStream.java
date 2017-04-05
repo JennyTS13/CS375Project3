@@ -19,8 +19,8 @@ public class MatrixMultStream implements MatrixMult {
     /**
      * Computes the result of multiplying two 2D arrays
      *
-     * @param   A the first 2d array
-     * @param   B the second 2d array
+     * @param   A the first 2D array
+     * @param   B the second 2D array
      * @return  the resulting multiplication matrix
      */
     @Override
