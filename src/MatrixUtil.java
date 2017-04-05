@@ -183,11 +183,11 @@ public class MatrixUtil {
      */
     public static void testMatrixMult(MatrixMult matrixMult){
         int[][] A = {{1, 2, 6},
-                {2, 1, 8}};
+                     {2, 1, 8}};
 
         int[][] B = {{1, 2},
-                {1, 2},
-                {2, 1}};
+                     {1, 2},
+                     {2, 1}};
 
         Timer.start();
         int[][] result = matrixMult.computeMatrixMult(A, B);
