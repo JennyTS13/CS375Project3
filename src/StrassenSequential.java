@@ -15,6 +15,13 @@
  */
 public class StrassenSequential implements MatrixMult {
 
+    /**
+     * Computes the result of multiplying two 2D arrays
+     *
+     * @param   A the first 2D array
+     * @param   B the second 2D array
+     * @return  the resulting multiplication matrix
+     */
     @Override
     public int[][] computeMatrixMult(int[][] A, int[][] B) {
         int[][] result = new int[A.length][A.length];
