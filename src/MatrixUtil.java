@@ -138,8 +138,9 @@ public class MatrixUtil {
     }
 
     /**
-     * Returns a 2D matrix of the specified dimension made up of values from the
-     * 4 input matrices.
+     * Returns a 2D matrix of the specified dimension
+     * made up of values from the 4 input matrices
+     *
      * @param   a00 2D matrix to copy into final matrix
      * @param   a01 2D matrix to copy into final matrix
      * @param   a10 2D matrix to copy into final matrix
@@ -177,6 +178,7 @@ public class MatrixUtil {
 
     /**
      * Tests the matrix multiplier, printing out the results
+     *
      * @param matrixMult the matrix multiplier used to multiply the matrices
      */
     public static void testMatrixMult(MatrixMult matrixMult){
