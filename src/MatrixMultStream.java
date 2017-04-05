@@ -14,22 +14,25 @@ import static java.util.stream.IntStream.range;
 /**
  * This class computes the product of multiplying to matrices using streams.
  */
-public class MatrixMultStream {
+public class MatrixMultStream implements MatrixMult{
 
     /**
      * Computes the result of multiplying two 2D arrays
      *
      * @param   A the first 2d array
      * @param   B the second 2d array
-     * @return  the resulting stream created
+     * @return  the resulting array created
      */
-    public Stream<IntStream> computeMatrixMult(int[][] A, int[][] B) {
-        return Arrays.stream(A)
+    @Override
+    public int[][] computeMatrixMult(int[][] A, int[][] B) {
+        Stream<IntStream> result = Arrays.stream(A)
                      .map(row -> range(0, B[0].length)
                              .map(rowIndex -> range(0, B.length)
                                      .parallel()
                                      .map(colIndex -> row[colIndex]*B[colIndex][rowIndex])
                                      .sum()));
+
+        return result.parallel().map(IntStream::toArray).toArray(int[][]::new);
     }
 
     /**
@@ -45,8 +48,11 @@ public class MatrixMultStream {
                      {1, 2},
                      {2, 1}};
 
-        Stream<IntStream> result = (new MatrixMultStream()).computeMatrixMult(A, B);
-        result.forEach(row -> {row.forEach(item -> System.out.print(item + " "));
-                               System.out.println();});
+        Timer.start();
+        int[][] result = (new MatrixMultStream()).computeMatrixMult(A, B);
+        Timer.stop();
+
+        MatrixUtil.printMatrix(result);
+        System.out.println("Total time: " + Timer.getRuntime());
     }
 }
