@@ -33,7 +33,7 @@ public class StrassenForkJoin implements MatrixMult {
     }
 
     class MatrixMultAction extends RecursiveAction {
-        private static final int THRESHOLD = 100;
+        private static final int THRESHOLD = 64;
         private int[][] a, b, result;
 
         public MatrixMultAction(int[][] A, int[][] B) {
