@@ -5,6 +5,8 @@
  * Project: 3
  */
 
+import java.util.Random;
+
 /**
  * This utility class for 2D matrices
  */
@@ -51,8 +53,7 @@ public class MatrixUtil {
      * @param   B the second matrix
      * @return  Product of the two input matrices (A * B)
      */
-    public static int[][] multMatrices(int[][] A, int[][] B) {
-        int[][] result = new int[A.length][A.length];
+    public static void multMatrices(int[][] A, int[][] B, int[][] result) {
         for(int i = 0; i < A.length; i++) {
             for(int j = 0; j < B[0].length; j++) {
                 result[i][j] = 0;
@@ -61,7 +62,6 @@ public class MatrixUtil {
                 }
             }
         }
-        return result;
     }
 
     /**
@@ -145,13 +145,11 @@ public class MatrixUtil {
      * @param   a01 2D matrix to copy into final matrix
      * @param   a10 2D matrix to copy into final matrix
      * @param   a11 2D matrix to copy into final matrix
-     * @param   matrixSize integer of desired matrix dimension
      * @return  2D matrix of the 4 matrices joined together,
      *          cutting off at specified dimension
      */
-    public static int[][] joinMatrices(int[][] a00, int[][] a01, int[][] a10, int[][] a11,
-                                       int matrixSize) {
-        int[][] result = new int[matrixSize][matrixSize];
+    public static void joinMatrices(int[][] a00, int[][] a01, int[][] a10, int[][] a11,
+                                       int[][] result) {
         int subMatrixSize = a00.length;
         for(int i = 0; i < result.length; i++) {
             for(int j = 0; j < result[0].length; j++) {
@@ -173,6 +171,16 @@ public class MatrixUtil {
                 }
             }
         }
+    }
+
+    public static int[][] genTestMatrix(int numRow, int numCols){
+        int[][] result = new int[numRow][numCols];
+        Random r = new Random();
+        for (int i = 0; i<numRow; i++){
+            for (int j = 0; j<numCols; j++){
+                result[i][j] = r.nextInt(10);
+            }
+        }
         return result;
     }
 
@@ -182,12 +190,15 @@ public class MatrixUtil {
      * @param matrixMult the matrix multiplier used to multiply the matrices
      */
     public static void testMatrixMult(MatrixMult matrixMult){
-        int[][] A = {{1, 2, 6},
-                     {2, 1, 8}};
+        int[][] A = MatrixUtil.genTestMatrix(200, 200);
 
-        int[][] B = {{1, 2},
-                     {1, 2},
-                     {2, 1}};
+        int[][] B = MatrixUtil.genTestMatrix(200, 200);
+
+        System.out.println("Matrix A");
+        MatrixUtil.printMatrix(A);
+
+        System.out.println("Matrix B");
+        MatrixUtil.printMatrix(B);
 
         Timer.start();
         int[][] result = matrixMult.computeMatrixMult(A, B);

@@ -30,7 +30,7 @@ public class StrassenSequential implements MatrixMult {
         int submatrixSize = MatrixUtil.calcSize(A.length, A[0].length)/2;
 
         if (submatrixSize <= 64) {
-            result = MatrixUtil.multMatrices(A, B);
+            MatrixUtil.multMatrices(A, B, result);
         }
         else {
             int[][][] subMatricesA, subMatricesB;
@@ -81,7 +81,7 @@ public class StrassenSequential implements MatrixMult {
                     MatrixUtil.subtractMatrices(m1, m2), m3), m6);
 
             // join submatrices to get final multiplication matrix result
-            result = MatrixUtil.joinMatrices(c00, c01, c10, c11, result.length);
+            MatrixUtil.joinMatrices(c00, c01, c10, c11, result);
         }
 
         return result;
