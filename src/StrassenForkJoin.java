@@ -6,7 +6,6 @@
  */
 
 import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveAction;
 
 /**
@@ -94,7 +93,7 @@ public class StrassenForkJoin implements MatrixMult {
                 invokeAll(mVals);
 
                 // resulting submatrices of final multiplication matrix
-                c00 = MatrixUtil.addMatrices(MatrixUtil.subtractMatrices(
+                c00 = MatrixUtil.addMatrices(MatrixUtil.subtractMatrices (
                         MatrixUtil.addMatrices(mVals[0].getResult(), mVals[3].getResult()),
                         mVals[4].getResult()), mVals[6].getResult());
                 c01 = MatrixUtil.addMatrices(mVals[2].getResult(), mVals[4].getResult());

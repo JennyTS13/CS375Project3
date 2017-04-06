@@ -73,7 +73,7 @@ public class StrassenSequential implements MatrixMult {
                     MatrixUtil.addMatrices(b10, b11));
 
             // resulting submatrices of final multiplication matrix
-            c00 = MatrixUtil.addMatrices(MatrixUtil.subtractMatrices(
+            c00 = MatrixUtil.addMatrices(MatrixUtil.subtractMatrices (
                     MatrixUtil.addMatrices(m1, m4), m5), m7);
             c01 = MatrixUtil.addMatrices(m3, m5);
             c10 = MatrixUtil.addMatrices(m2, m4);
