@@ -65,8 +65,10 @@ public class StrassenForkJoin implements MatrixMult {
                 // subdivide each matrix into 4 matrices
                 // padding with 0s to obtain matrix of size 2^n by 2^n
                 else {
-                    subMatricesA = MatrixUtil.subDivideMatrix(MatrixUtil.padMatrixZeroes(a, submatrixSize*2));
-                    subMatricesB = MatrixUtil.subDivideMatrix(MatrixUtil.padMatrixZeroes(b, submatrixSize*2));
+                    subMatricesA = MatrixUtil.subDivideMatrix(
+                            MatrixUtil.padMatrixZeroes(a, submatrixSize*2));
+                    subMatricesB = MatrixUtil.subDivideMatrix(
+                            MatrixUtil.padMatrixZeroes(b, submatrixSize*2));
                 }
 
                 a00 = subMatricesA[0];
@@ -79,29 +81,37 @@ public class StrassenForkJoin implements MatrixMult {
                 b11 = subMatricesB[3];
 
                 // calculates product arrays
-                mVals[0] = new MatrixMultAction(MatrixUtil.addMatrices(a00, a11),
+                mVals[0] = new MatrixMultAction(
+                        MatrixUtil.addMatrices(a00, a11),
                         MatrixUtil.addMatrices(b00, b11));
-                mVals[1] = new MatrixMultAction(MatrixUtil.addMatrices(a10, a11), b00);
-                mVals[2] = new MatrixMultAction(a00, MatrixUtil.subtractMatrices(b01, b11));
-                mVals[3] = new MatrixMultAction(a11, MatrixUtil.subtractMatrices(b10, b00));
-                mVals[4] = new MatrixMultAction(MatrixUtil.addMatrices(a00, a01), b11);
-                mVals[5] = new MatrixMultAction(MatrixUtil.subtractMatrices(a10, a00),
+                mVals[1] = new MatrixMultAction(
+                        MatrixUtil.addMatrices(a10, a11), b00);
+                mVals[2] = new MatrixMultAction(
+                        a00, MatrixUtil.subtractMatrices(b01, b11));
+                mVals[3] = new MatrixMultAction(
+                        a11, MatrixUtil.subtractMatrices(b10, b00));
+                mVals[4] = new MatrixMultAction(
+                        MatrixUtil.addMatrices(a00, a01), b11);
+                mVals[5] = new MatrixMultAction(
+                        MatrixUtil.subtractMatrices(a10, a00),
                         MatrixUtil.addMatrices(b00, b01));
-                mVals[6] = new MatrixMultAction(MatrixUtil.subtractMatrices(a01, a11),
+                mVals[6] = new MatrixMultAction(
+                        MatrixUtil.subtractMatrices(a01, a11),
                         MatrixUtil.addMatrices(b10, b11));
 
                 invokeAll(mVals);
 
                 // resulting submatrices of final multiplication matrix
                 c00 = MatrixUtil.addMatrices(MatrixUtil.subtractMatrices (
-                        MatrixUtil.addMatrices(mVals[0].getResult(), mVals[3].getResult()),
-                        mVals[4].getResult()), mVals[6].getResult());
+                        MatrixUtil.addMatrices(
+                                mVals[0].getResult(), mVals[3].getResult()),
+                                mVals[4].getResult()), mVals[6].getResult());
                 c01 = MatrixUtil.addMatrices(mVals[2].getResult(), mVals[4].getResult());
                 c10 = MatrixUtil.addMatrices(mVals[1].getResult(), mVals[3].getResult());
                 c11 = MatrixUtil.addMatrices(MatrixUtil.addMatrices(
                         MatrixUtil.subtractMatrices(mVals[0].getResult(),
                                 mVals[1].getResult()), mVals[2].getResult()),
-                        mVals[5].getResult());
+                                mVals[5].getResult());
 
                 // join submatrices to get final multiplication matrix result
                 result = MatrixUtil.joinMatrices(c00, c01, c10, c11, result.length);

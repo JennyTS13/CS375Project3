@@ -47,8 +47,10 @@ public class StrassenSequential implements MatrixMult {
             // subdivide each matrix into 4 matrices
             // padding with 0s to obtain matrix of size 2^n by 2^n
             else {
-                subMatricesA = MatrixUtil.subDivideMatrix(MatrixUtil.padMatrixZeroes(A, submatrixSize*2));
-                subMatricesB = MatrixUtil.subDivideMatrix(MatrixUtil.padMatrixZeroes(B, submatrixSize*2));
+                subMatricesA = MatrixUtil.subDivideMatrix(
+                        MatrixUtil.padMatrixZeroes(A, submatrixSize*2));
+                subMatricesB = MatrixUtil.subDivideMatrix(
+                        MatrixUtil.padMatrixZeroes(B, submatrixSize*2));
             }
 
             a00 = subMatricesA[0];
