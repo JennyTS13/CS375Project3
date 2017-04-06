@@ -15,6 +15,7 @@ import java.util.concurrent.RecursiveAction;
  * product of two matrices using the Strassen's Algorithm.
  */
 public class StrassenForkJoin implements MatrixMult {
+
     /**
      * Computes the result of multiplying two 2D arrays
      *
@@ -40,6 +41,9 @@ public class StrassenForkJoin implements MatrixMult {
             b = B;
         }
 
+        /**
+         * Computes the multiplication matrix
+         */
         @Override
         protected void compute() {
             result = new int[a.length][a.length];
