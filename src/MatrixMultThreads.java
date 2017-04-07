@@ -68,7 +68,35 @@ public class MatrixMultThreads implements MatrixMult {
 
             subResults = new int[8][a00.length][a00.length];
 
-            if (NUM_THREADS == 4) {
+            if (NUM_THREADS == 2){
+
+                MatrixThread[] threads = new MatrixThread[2];
+
+                threads[0] = new MatrixThread(a00, b00);
+                threads[1] = new MatrixThread(a01, b10);
+
+                this.startThreads(threads);
+                this.getResults(threads, subResults, 0);
+
+                threads[0] = new MatrixThread(a00, b01);
+                threads[1] = new MatrixThread(a01, b11);
+
+                this.startThreads(threads);
+                this.getResults(threads, subResults, 2);
+
+                threads[0] = new MatrixThread(a10, b00);
+                threads[1] = new MatrixThread(a11, b10);
+
+                this.startThreads(threads);
+                this.getResults(threads, subResults, 4);
+
+                threads[0] = new MatrixThread(a10, b01);
+                threads[1] = new MatrixThread(a11, b11);
+
+                this.startThreads(threads);
+                this.getResults(threads, subResults, 6);
+
+            } else if (NUM_THREADS == 4) {
 
                 MatrixThread[] threads = new MatrixThread[4];
 
@@ -89,6 +117,28 @@ public class MatrixMultThreads implements MatrixMult {
                 this.getResults(threads, subResults, 4);
 
 
+            } else if (NUM_THREADS == 6){
+
+                MatrixThread[] threads = new MatrixThread[6];
+
+                threads[0] = new MatrixThread(a00, b00);
+                threads[1] = new MatrixThread(a01, b10);
+                threads[2] = new MatrixThread(a00, b01);
+                threads[3] = new MatrixThread(a01, b11);
+                threads[4] = new MatrixThread(a10, b00);
+                threads[5] = new MatrixThread(a11, b10);
+
+                this.startThreads(threads);
+                this.getResults(threads, subResults, 0);
+
+                threads = new MatrixThread[2];
+
+                threads[0] = new MatrixThread(a10, b01);
+                threads[1] = new MatrixThread(a11, b11);
+
+                this.startThreads(threads);
+                this.getResults(threads, subResults, 6);
+
             } else if (NUM_THREADS == 8){
                 MatrixThread[] threads = new MatrixThread[8];
 
@@ -105,7 +155,6 @@ public class MatrixMultThreads implements MatrixMult {
                 this.getResults(threads, subResults, 0);
 
             } else {
-
                 return MatrixUtil.multMatrices(A, B);
             }
 
