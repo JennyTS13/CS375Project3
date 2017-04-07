@@ -65,6 +65,7 @@ public class Driver {
         initialize(A, B);
         test("Sequential Strassens version", new StrassenSequential());
         test("Threaded version", new MatrixMultThreads());
+        test("Strassens threads version", new StrassensThreads());
         test("Parallel streams version", new MatrixMultStream());
         test("Fork-join version", new StrassenForkJoin());
     }
