@@ -67,7 +67,7 @@ public class StrassensThreads implements MatrixMult {
 
             subResults = new int[8][a00.length][a00.length];
 
-            int [][][][] c = {{a00, b00}, {a01, b10}, {a00, b01}, {a01, b11}, {a10, b00}, {a11, b10}, {a10, b01}, {a11, b11}};
+            int [][][][] pairsOfMatrices = {{a00, b00}, {a01, b10}, {a00, b01}, {a01, b11}, {a10, b00}, {a11, b10}, {a10, b01}, {a11, b11}};
 
             int numUsableThreads = NUM_THREADS;
             if (NUM_THREADS > 8){
@@ -83,7 +83,7 @@ public class StrassensThreads implements MatrixMult {
                 if (i+1 <= remainder){
                     endIndex++;
                 }
-                threads[i] = new MatrixThread(c, subResults, indexFirstUnAssigned, endIndex);
+                threads[i] = new MatrixThread(pairsOfMatrices, subResults, indexFirstUnAssigned, endIndex);
                 indexFirstUnAssigned = endIndex ;
             }
 
@@ -119,13 +119,13 @@ public class StrassensThreads implements MatrixMult {
      */
     class MatrixThread extends Thread{
 
-        private int[][][][] matricies;
+        private int[][][][] pairsOfMatrices;
         private int[][][] result;
         private int start, stop;
         private StrassenSequential strassenSequential;
 
-        public MatrixThread(int[][][][] matricies, int[][][] result, int start, int stop){
-            this.matricies = matricies;
+        public MatrixThread(int[][][][] pairsOfMatrices, int[][][] result, int start, int stop){
+            this.pairsOfMatrices = pairsOfMatrices;
             this.start = start;
             this.stop = stop;
             this.result = result;
@@ -135,7 +135,7 @@ public class StrassensThreads implements MatrixMult {
         @Override
         public void run(){
             for (int i = this.start; i<this.stop; i++){
-                this.result[i] = this.strassenSequential.computeMatrixMult(this.matricies[i][0], this.matricies[i][1]);
+                this.result[i] = this.strassenSequential.computeMatrixMult(this.pairsOfMatrices[i][0], this.pairsOfMatrices[i][1]);
             }
         }
     }
