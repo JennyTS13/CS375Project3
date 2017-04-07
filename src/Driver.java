@@ -9,14 +9,14 @@
  * A driver for testing different algorithms of multiplying two matrices.
  */
 public class Driver {
-//    final static int[][] A = new int[1500][1000];
-//    final static int[][] B = new int[1000][1500];
-    final static int[][] A = {{1, 2, 6},
-                              {2, 1, 8}};
-
-    final static int[][] B = {{1, 2},
-                              {1, 2},
-                              {2, 1}};
+    final static int[][] A = new int[1000][1000];
+    final static int[][] B = new int[1000][1000];
+//    final static int[][] A = {{1, 2, 6},
+//                              {2, 1, 8}};
+//
+//    final static int[][] B = {{1, 2},
+//                              {1, 2},
+//                              {2, 1}};
 
     static long sequentialRuntime = 0;
     final static int NUM_PROCESSORS = Runtime.getRuntime().availableProcessors();
@@ -44,7 +44,7 @@ public class Driver {
         System.out.println("--------" + version + "----------");
 
         // output the multiplication matrix
-        MatrixUtil.printMatrix(result);
+        //MatrixUtil.printMatrix(result);
 
         // output the time needed to find the product
         System.out.println("Time: " + Timer.getRuntime() + "ms");
@@ -62,8 +62,9 @@ public class Driver {
 
     public static void main(String[] args) throws Exception {
         System.out.println("Number of processors: " + NUM_PROCESSORS);
-//        initialize(A, B);
-        test("Sequential version", new StrassenSequential());
+        initialize(A, B);
+        test("Sequential Strassens version", new StrassenSequential());
+        test("Threaded version", new MatrixMultThreads());
         test("Parallel streams version", new MatrixMultStream());
         test("Fork-join version", new StrassenForkJoin());
     }
