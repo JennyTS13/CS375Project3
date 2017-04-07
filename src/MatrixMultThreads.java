@@ -37,7 +37,7 @@ public class MatrixMultThreads implements MatrixMult {
         else {
             int[][][] subMatricesA, subMatricesB;
             int[][] a00, a01, a10, a11, b00, b01, b10, b11;
-            int[][] c00, c01, c02, c03, c04, c05, c06, c07;
+            int[][][] subResults;
             int[][] d00, d01, d10, d11;
 
             // matrix is already of size 2^n by 2^n
@@ -65,82 +65,79 @@ public class MatrixMultThreads implements MatrixMult {
             b10 = subMatricesB[2];
             b11 = subMatricesB[3];
 
-            c00 = new int[a00.length][a00[0].length];
-            c01 = new int[a00.length][a00[0].length];
-            c02 = new int[a00.length][a00[0].length];
-            c03 = new int[a00.length][a00[0].length];
-            c04 = new int[a00.length][a00[0].length];
-            c05 = new int[a00.length][a00[0].length];
-            c06 = new int[a00.length][a00[0].length];
-            c07 = new int[a00.length][a00[0].length];
+
+            subResults = new int[8][a00.length][a00.length];
 
             if (NUM_THREADS == 4) {
 
                 MatrixThread[] threads = new MatrixThread[4];
 
-                threads[0] = new MatrixThread(a00, b00, c00);
-                threads[1] = new MatrixThread(a01, b10, c01);
-                threads[2] = new MatrixThread(a00, b01, c02);
-                threads[3] = new MatrixThread(a01, b11, c03);
+                threads[0] = new MatrixThread(a00, b00);
+                threads[1] = new MatrixThread(a01, b10);
+                threads[2] = new MatrixThread(a00, b01);
+                threads[3] = new MatrixThread(a01, b11);
 
-                //wait for all threads to finish
-                for (MatrixThread t : threads) {
-                    try {
-                        t.join();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
+                this.startThreads(threads);
+                this.getResults(threads, subResults, 0);
+
+                threads[0] = new MatrixThread(a10, b00);
+                threads[1] = new MatrixThread(a11, b10);
+                threads[2] = new MatrixThread(a10, b01);
+                threads[3] = new MatrixThread(a11, b11);
+
+                this.startThreads(threads);
+                this.getResults(threads, subResults, 4);
 
 
-                threads[0] = new MatrixThread(a10, b00, c04);
-                threads[1] = new MatrixThread(a11, b10, c05);
-                threads[2] = new MatrixThread(a10, b01, c06);
-                threads[3] = new MatrixThread(a11, b11, c07);
-
-                //wait for all threads to finish
-                for (MatrixThread t : threads) {
-                    try {
-                        t.join();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
             } else if (NUM_THREADS == 8){
                 MatrixThread[] threads = new MatrixThread[8];
 
-                threads[0] = new MatrixThread(a00, b00, c00);
-                threads[1] = new MatrixThread(a01, b10, c01);
-                threads[2] = new MatrixThread(a00, b01, c02);
-                threads[3] = new MatrixThread(a01, b11, c03);
-                threads[4] = new MatrixThread(a10, b00, c04);
-                threads[5] = new MatrixThread(a11, b10, c05);
-                threads[6] = new MatrixThread(a10, b01, c06);
-                threads[7] = new MatrixThread(a11, b11, c07);
+                threads[0] = new MatrixThread(a00, b00);
+                threads[1] = new MatrixThread(a01, b10);
+                threads[2] = new MatrixThread(a00, b01);
+                threads[3] = new MatrixThread(a01, b11);
+                threads[4] = new MatrixThread(a10, b00);
+                threads[5] = new MatrixThread(a11, b10);
+                threads[6] = new MatrixThread(a10, b01);
+                threads[7] = new MatrixThread(a11, b11);
 
-                //wait for all threads to finish
-                for (MatrixThread t : threads) {
-                    try {
-                        t.join();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
+                this.startThreads(threads);
+                this.getResults(threads, subResults, 0);
+
             } else {
 
                 return MatrixUtil.multMatrices(A, B);
             }
 
-            d00 = MatrixUtil.addMatrices(c00, c01);
-            d01 = MatrixUtil.addMatrices(c02, c03);
-            d10 = MatrixUtil.addMatrices(c04, c05);
-            d11 = MatrixUtil.addMatrices(c06, c07);
+            d00 = MatrixUtil.addMatrices(subResults[0], subResults[1]);
+            d01 = MatrixUtil.addMatrices(subResults[2], subResults[3]);
+            d10 = MatrixUtil.addMatrices(subResults[4], subResults[5]);
+            d11 = MatrixUtil.addMatrices(subResults[6], subResults[7]);
 
             // join submatrices to get final multiplication matrix result
             result = MatrixUtil.joinMatrices(d00, d01, d10, d11, result.length);
         }
 
         return result;
+    }
+
+    private void getResults(MatrixThread[] threads, int[][][] results, int startLoc) {
+        //wait for all threads to finish
+        for (int i =0; i< threads.length; i++) {
+            try {
+                threads[i].join();
+                int[][] result = threads[i].getResult();
+                results[i + startLoc] =  result;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void startThreads(MatrixThread[] threads){
+        for (Thread t: threads){
+            t.start();
+        }
     }
 
     /**
@@ -150,17 +147,18 @@ public class MatrixMultThreads implements MatrixMult {
 
         private int[][] A, B, result;
 
-        public MatrixThread(int[][] a, int[][] b, int[][] c){
+        public MatrixThread(int[][] a, int[][] b){
             A = a;
             B = b;
-            result = c;
         }
 
         @Override
         public void run(){
+            this.result = MatrixUtil.multMatrices(A, B);
+        }
 
-            result = MatrixUtil.multMatrices(A, B);
-
+        public int[][] getResult(){
+            return this.result;
         }
     }
 
