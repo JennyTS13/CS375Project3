@@ -19,6 +19,7 @@ public class Driver {
 //                              {2, 1}};
 
     static long sequentialRuntime = 0;
+    static long strassenRuntime = 0;
     final static int NUM_PROCESSORS = Runtime.getRuntime().availableProcessors();
 
     private static void initialize(int[][] A, int[][] B) {
@@ -44,30 +45,37 @@ public class Driver {
         System.out.println("--------" + version + "----------");
 
         // output the multiplication matrix
-        //MatrixUtil.printMatrix(result);
+//        MatrixUtil.printMatrix(result);
 
         // output the time needed to find the product
         System.out.println("Time: " + Timer.getRuntime() + "ms");
 
         // output the speedup
-        if (sequentialRuntime == 0) {
+        if (version.equals("Standard Sequential Version")) {
             sequentialRuntime = Timer.getRuntime(); //sequential time
+        } else if (version.equals("Sequential Strassens Version")){
+            strassenRuntime = Timer.getRuntime();
+            System.out.printf("Speed-up vs. Standard Sequential: %.2f\n", sequentialRuntime / 1.0 / Timer
+                    .getRuntime());
         }
         else {
-            System.out.printf("Speed-up: %.2f\n", sequentialRuntime / 1.0 / Timer
-                    .getRuntime());
+            System.out.printf("Speed-up vs. Standard Sequential: %.2f\n",
+                    sequentialRuntime / 1.0 / Timer.getRuntime());
+            System.out.printf("Speed-up vs. Strassen's Sequential: %.2f\n",
+                    strassenRuntime / 1.0 / Timer.getRuntime());
         }
         System.out.println();
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println("Number of processors: " + NUM_PROCESSORS);
+        System.out.println("Number of Processors: " + NUM_PROCESSORS);
         initialize(A, B);
-        test("Sequential Strassens version", new StrassenSequential());
-        test("Threaded version", new MatrixMultThreads());
-        test("Strassens threads version", new StrassensThreads());
-        test("Parallel streams version", new MatrixMultStream());
-        test("Fork-join version", new StrassenForkJoin());
+        test("Standard Sequential Version", new MatrixMultSequential());
+        test("Sequential Strassens Version", new StrassenSequential());
+        test("Threaded Version", new MatrixMultThreads());
+        test("Strassens Threaded Version", new StrassensThreads());
+        test("Parallel Streams Version", new MatrixMultStream());
+        test("Fork-Join Version", new StrassenForkJoin());
     }
 
 }
