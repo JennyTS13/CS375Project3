@@ -85,7 +85,7 @@ public class StrassensThreads implements MatrixMult {
             int remainder = 8 % numUsableThreads;
             int numPerThread = (8 -  remainder)/numUsableThreads;
             int indexFirstUnAssigned = 0;
-            //assigns to threach which matrices from pairsOfMatrices to multiply
+            //assigns to each thread which matrices from pairsOfMatrices to multiply
             for (int i = 0; i< numUsableThreads; i++){
                 int endIndex = indexFirstUnAssigned + numPerThread;
                 if (i+1 <= remainder){
@@ -148,13 +148,13 @@ public class StrassensThreads implements MatrixMult {
         private int start, stop;
 
         /**
-         * The MatrixMult which multiplies the matricies.
+         * The MatrixMult which multiplies the matrices.
          */
         private StrassenSequential strassenSequential;
 
 
         /**
-         * Creates a matrix thread which multiples matricies using Strassen's.
+         * Creates a matrix thread which multiples matrices using Strassen's.
          * @param pairsOfMatrices Pairs of matrices that must be multiplied
          * @param result The matrix to put the result into
          * @param start The starting index for which pairs of matrices to multiply
@@ -189,5 +189,26 @@ public class StrassensThreads implements MatrixMult {
      */
     public static void main(String[] args) {
         MatrixUtil.testMatrixMult(new StrassensThreads());
+
+        int[][] A = new int[100][1000];
+        int[][] B = new int[1000][100];
+        for(int i = 0; i < A.length; i++){
+            for(int j = 0; j < A[0].length; j++) {
+                A[i][j] = i + j;
+                B[j][i] = j + i;
+            }
+        }
+
+        int[][] normal = MatrixUtil.multMatrices(A, B);
+        int[][] strassnes = (new StrassensThreads()).computeMatrixMult(A, B);
+
+        for (int i =0; i< normal.length;  i++){
+            for (int j = 0; j<normal[i].length; j++){
+                if (normal[i][j] != strassnes[i][j]){
+                    System.out.println("Not equal");
+                }
+            }
+        }
+
     }
 }

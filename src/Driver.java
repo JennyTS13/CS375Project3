@@ -44,9 +44,8 @@ public class Driver {
      * Tests a MatrixMult, finding the time and speed ups
      * @param version the name of the MatrixMult being tested
      * @param m the MatrixMult
-     * @throws Exception
      */
-    private static void test(String version, MatrixMult m) throws Exception {
+    private static void test(String version, MatrixMult m){
         // warm up
         m.computeMatrixMult(A, B);
         m.computeMatrixMult(A, B);
@@ -82,7 +81,7 @@ public class Driver {
         System.out.println();
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args){
         System.out.println("Number of Processors: " + NUM_PROCESSORS);
         initialize(A, B);
         test("Standard Sequential Version", new MatrixMultSequential());
