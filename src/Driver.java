@@ -9,19 +9,28 @@
  * A driver for testing different algorithms of multiplying two matrices.
  */
 public class Driver {
+
+    /**
+     * The matrices to be multiplied.
+     */
     final static int[][] A = new int[1000][1000];
     final static int[][] B = new int[1000][1000];
-//    final static int[][] A = {{1, 2, 6},
-//                              {2, 1, 8}};
-//
-//    final static int[][] B = {{1, 2},
-//                              {1, 2},
-//                              {2, 1}};
 
+
+    /** The time to multiply the matrices using MatrixMultSequential*/
     static long sequentialRuntime = 0;
+
+    /** The time to multiply the matrices using StrassensSequential*/
     static long strassenRuntime = 0;
+
+    /** The number of processors available */
     final static int NUM_PROCESSORS = Runtime.getRuntime().availableProcessors();
 
+    /**
+     * Initializes matrices A and B with arbitrary values
+     * @param A a 2D matrix
+     * @param B another 2D matrix
+     */
     private static void initialize(int[][] A, int[][] B) {
         for(int i = 0; i < A.length; i++){
             for(int j = 0; j < A[0].length; j++) {
@@ -31,6 +40,12 @@ public class Driver {
         }
     }
 
+    /**
+     * Tests a MatrixMult, finding the time and speed ups
+     * @param version the name of the MatrixMult being tested
+     * @param m the MatrixMult
+     * @throws Exception
+     */
     private static void test(String version, MatrixMult m) throws Exception {
         // warm up
         m.computeMatrixMult(A, B);
@@ -55,8 +70,8 @@ public class Driver {
             sequentialRuntime = Timer.getRuntime(); //sequential time
         } else if (version.equals("Sequential Strassens Version")){
             strassenRuntime = Timer.getRuntime();
-            System.out.printf("Speed-up vs. Standard Sequential: %.2f\n", sequentialRuntime / 1.0 / Timer
-                    .getRuntime());
+            System.out.printf("Speed-up vs. Standard Sequential: %.2f\n",
+                    sequentialRuntime / 1.0 / Timer.getRuntime());
         }
         else {
             System.out.printf("Speed-up vs. Standard Sequential: %.2f\n",

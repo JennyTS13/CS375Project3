@@ -7,11 +7,8 @@
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
 import static java.util.stream.IntStream.range;
 
 /**
@@ -39,34 +36,8 @@ public class MatrixMultStream implements MatrixMult {
 
     /**
      * Used for testing the computeMatrixMult method
-     *
-     * @param args
      */
     public static void main(String[] args) {
         MatrixUtil.testMatrixMult(new MatrixMultStream());
-
-        int[][] A = new int[15000][1000];
-        int[][] B = new int[1000][15000];
-
-        for(int i = 0; i < A.length; i++){
-            for(int j = 0; j < A[0].length; j++) {
-                A[i][j] = i + j;
-                B[j][i] = j + i;
-            }
-        }
-
-        int[][] resultSeq = (new StrassenSequential()).computeMatrixMult(A, B);
-        int[][] resultStream = (new MatrixMultStream()).computeMatrixMult(A, B);
-
-        int count = 0;
-        for (int i = 0; i< resultSeq.length; i++){
-            for (int j =0; j< resultSeq[i].length; j++){
-                if (resultSeq[i][j] != resultStream[i][j]){
-                    count++;
-                }
-            }
-        }
-
-        System.out.println("Num of differences: " + count); // 0!
     }
 }

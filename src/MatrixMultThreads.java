@@ -9,11 +9,15 @@
 /**
  * This class computes the product of multiplying two matrices together
  *
- * It does so utilizing threads when applicable to allow for a faster runtime
+ * It does so utilizing threads and Strassen's algorithm
+ * when applicable to allow for a faster runtime
  */
 public class MatrixMultThreads implements MatrixMult {
 
 
+    /**
+     * The number of processors available.
+     */
     public static final int NUM_THREADS = Runtime.getRuntime().availableProcessors();
 
 
@@ -170,6 +174,12 @@ public class MatrixMultThreads implements MatrixMult {
         return result;
     }
 
+    /**
+     * Gets the results of the threads matrices and puts them into the results matrix
+     * @param threads the threads that are used to calculate the multiplication
+     * @param results the array to put the results in
+     * @param startLoc the index to start putting results in, in the results matrix
+     */
     private void getResults(MatrixThread[] threads, int[][][] results, int startLoc) {
         //wait for all threads to finish
         for (int i =0; i< threads.length; i++) {
@@ -183,6 +193,10 @@ public class MatrixMultThreads implements MatrixMult {
         }
     }
 
+    /**
+     * Starts the threads.
+     * @param threads the threads it starts.
+     */
     private void startThreads(MatrixThread[] threads){
         for (Thread t: threads){
             t.start();
@@ -194,18 +208,33 @@ public class MatrixMultThreads implements MatrixMult {
      */
     class MatrixThread extends Thread{
 
+        /**
+         * The matrices to be multiplied and the results of multiplying them.
+         */
         private int[][] A, B, result;
 
+        /**
+         * Creates a thread to multiply the given matrices
+         * @param a a matrix
+         * @param b another matrix
+         */
         public MatrixThread(int[][] a, int[][] b){
             A = a;
             B = b;
         }
 
+        /**
+         * Multiplies the matrices using standard matrix muliplication
+         */
         @Override
         public void run(){
             this.result = MatrixUtil.multMatrices(A, B);
         }
 
+        /**
+         * Gets the results
+         * @return the results
+         */
         public int[][] getResult(){
             return this.result;
         }

@@ -1,5 +1,5 @@
 /*
- * File:    MatrixMultThreads.java
+ * File:    StrassensThreads.java
  * Authors: Charlie Beck, Phoebe Hughes, Tiffany Lam, Jenny Lin
  * Date:    April 10, 2017
  * Project: 3
@@ -13,7 +13,9 @@
  */
 public class StrassensThreads implements MatrixMult {
 
-
+    /**
+     * The number of processors available.
+     */
     public static final int NUM_THREADS = Runtime.getRuntime().availableProcessors();
 
 
@@ -36,8 +38,11 @@ public class StrassensThreads implements MatrixMult {
         }
         else {
             int[][][] subMatricesA, subMatricesB;
+
+            //individual parts of subMatricesA and B
             int[][] a00, a01, a10, a11, b00, b01, b10, b11;
             int[][][] subResults;
+            //the parts of the results
             int[][] d00, d01, d10, d11;
 
             // matrix is already of size 2^n by 2^n
@@ -67,7 +72,9 @@ public class StrassensThreads implements MatrixMult {
 
             subResults = new int[8][a00.length][a00.length];
 
-            int [][][][] pairsOfMatrices = {{a00, b00}, {a01, b10}, {a00, b01}, {a01, b11}, {a10, b00}, {a11, b10}, {a10, b01}, {a11, b11}};
+            //pairs of matrices that must be multiplied
+            int [][][][] pairsOfMatrices = {{a00, b00}, {a01, b10}, {a00, b01},
+                    {a01, b11}, {a10, b00}, {a11, b10}, {a10, b01}, {a11, b11}};
 
             int numUsableThreads = NUM_THREADS;
             if (NUM_THREADS > 8){
@@ -78,12 +85,14 @@ public class StrassensThreads implements MatrixMult {
             int remainder = 8 % numUsableThreads;
             int numPerThread = (8 -  remainder)/numUsableThreads;
             int indexFirstUnAssigned = 0;
+            //assigns to threach which matrices from pairsOfMatrices to multiply
             for (int i = 0; i< numUsableThreads; i++){
                 int endIndex = indexFirstUnAssigned + numPerThread;
                 if (i+1 <= remainder){
                     endIndex++;
                 }
-                threads[i] = new MatrixThread(pairsOfMatrices, subResults, indexFirstUnAssigned, endIndex);
+                threads[i] = new MatrixThread(pairsOfMatrices, subResults,
+                        indexFirstUnAssigned, endIndex);
                 indexFirstUnAssigned = endIndex ;
             }
 
@@ -101,6 +110,10 @@ public class StrassensThreads implements MatrixMult {
         return result;
     }
 
+    /**
+     * Starts and then joins the threads.
+     * @param threads the threads to be run.
+     */
     private void runThreads(MatrixThread[] threads){
         for (Thread t: threads){
             t.start();
@@ -119,12 +132,36 @@ public class StrassensThreads implements MatrixMult {
      */
     class MatrixThread extends Thread{
 
+        /**
+         * All pairs of matrices that must be multiplied.
+         */
         private int[][][][] pairsOfMatrices;
+
+        /**
+         * The result of multiplying the matrices.
+         */
         private int[][][] result;
+
+        /**
+         * Which matrix pairs to multiply in pairsOfMatrices.
+         */
         private int start, stop;
+
+        /**
+         * The MatrixMult which multiplies the matricies.
+         */
         private StrassenSequential strassenSequential;
 
-        public MatrixThread(int[][][][] pairsOfMatrices, int[][][] result, int start, int stop){
+
+        /**
+         * Creates a matrix thread which multiples matricies using Strassen's.
+         * @param pairsOfMatrices Pairs of matrices that must be multiplied
+         * @param result The matrix to put the result into
+         * @param start The starting index for which pairs of matrices to multiply
+         * @param stop the stopping index for which pairs of matrices to multiply
+         */
+        public MatrixThread(int[][][][] pairsOfMatrices,
+                            int[][][] result, int start, int stop){
             this.pairsOfMatrices = pairsOfMatrices;
             this.start = start;
             this.stop = stop;
@@ -132,10 +169,15 @@ public class StrassensThreads implements MatrixMult {
             this.strassenSequential = new StrassenSequential();
         }
 
+        /**
+         * Calculates the multiplication of the matrices that it is assigned and puts
+         * it into the results
+         */
         @Override
         public void run(){
             for (int i = this.start; i<this.stop; i++){
-                this.result[i] = this.strassenSequential.computeMatrixMult(this.pairsOfMatrices[i][0], this.pairsOfMatrices[i][1]);
+                this.result[i] = this.strassenSequential.computeMatrixMult(
+                        this.pairsOfMatrices[i][0], this.pairsOfMatrices[i][1]);
             }
         }
     }
