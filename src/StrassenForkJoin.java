@@ -32,10 +32,26 @@ public class StrassenForkJoin implements MatrixMult {
         return multAction.getResult();
     }
 
+    /**
+     * ForkJoinTask which performs matrix multiplication based on Strassen's Algorithm
+     */
     class MatrixMultAction extends RecursiveAction {
+
+        /**
+         * int threshold indicating when to stop subdivision
+         */
         private static final int THRESHOLD = 64;
+
+        /**
+         * 2D array of ints for operands and result of multiplication
+         */
         private int[][] a, b, result;
 
+        /**
+         * Constructor
+         * @param A first matrix operand for multiplication
+         * @param B second matrix operand for multiplication
+         */
         public MatrixMultAction(int[][] A, int[][] B) {
             a = A;
             b = B;
