@@ -16,6 +16,11 @@
 public class StrassenSequential implements MatrixMult {
 
     /**
+     * int threshold indicating when to stop subdivision
+     */
+    public static final int THRESHOLD = 64;
+
+    /**
      * Computes the result of multiplying two 2D arrays
      *
      * @param   A the first 2D array
@@ -29,7 +34,7 @@ public class StrassenSequential implements MatrixMult {
         //The size of the sub-matrices
         int submatrixSize = MatrixUtil.calcSize(A.length, A[0].length)/2;
 
-        if (submatrixSize <= 64) {
+        if (submatrixSize <= THRESHOLD) {
             result = MatrixUtil.multMatrices(A, B);
         }
         else {

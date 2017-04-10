@@ -17,6 +17,11 @@ import java.util.concurrent.RecursiveAction;
 public class StrassenForkJoin implements MatrixMult {
 
     /**
+     * int threshold indicating when to stop subdivision
+     */
+    private static final int THRESHOLD = 64;
+
+    /**
      * Computes the result of multiplying two 2D arrays
      *
      * @param   A the first 2D array
@@ -36,11 +41,6 @@ public class StrassenForkJoin implements MatrixMult {
      * ForkJoinTask which performs matrix multiplication based on Strassen's Algorithm
      */
     class MatrixMultAction extends RecursiveAction {
-
-        /**
-         * int threshold indicating when to stop subdivision
-         */
-        private static final int THRESHOLD = 64;
 
         /**
          * 2D array of ints for operands and result of multiplication
