@@ -89,6 +89,7 @@ public class Driver {
         test("Threaded Version", new MatrixMultThreads());
         test("Strassens Threaded Version", new StrassensThreads());
         test("Parallel Streams Version", new MatrixMultStream());
+        test("Strassen's Parallel Streams Version", new StrassenStream());
         test("Fork-Join Version", new StrassenForkJoin());
     }
 
