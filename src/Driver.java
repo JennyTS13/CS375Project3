@@ -13,8 +13,8 @@ public class Driver {
     /**
      * The matrices to be multiplied.
      */
-    final static int[][] A = new int[1500][1000];
-    final static int[][] B = new int[1000][1500];
+    final static int[][] A = new int[1000][1000];
+    final static int[][] B = new int[1000][1000];
 
 
     /** The time to multiply the matrices using MatrixMultSequential*/
