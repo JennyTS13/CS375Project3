@@ -5,6 +5,10 @@
  * Project: 3
  */
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * This class computes the product of multiplying to matrices using streams and strassen's
  * algorithm.
@@ -62,24 +66,29 @@ public class StrassenStream implements MatrixMult {
             b11 = subMatricesB[3];
 
             // calculates product arrays
-            m1 = computeMatrixMult(MatrixUtil.addMatrices(a00, a11),
-                    MatrixUtil.addMatrices(b00, b11));
-            m2 = computeMatrixMult(MatrixUtil.addMatrices(a10, a11), b00);
-            m3 = computeMatrixMult(a00, MatrixUtil.subtractMatrices(b01, b11));
-            m4 = computeMatrixMult(a11, MatrixUtil.subtractMatrices(b10, b00));
-            m5 = computeMatrixMult(MatrixUtil.addMatrices(a00, a01), b11);
-            m6 = computeMatrixMult(MatrixUtil.subtractMatrices(a10, a00),
-                    MatrixUtil.addMatrices(b00, b01));
-            m7 = computeMatrixMult(MatrixUtil.subtractMatrices(a01, a11),
-                    MatrixUtil.addMatrices(b10, b11));
+            int [][][][] pairsOfMatrices = {
+                    {MatrixUtil.addMatrices(a00, a11), MatrixUtil.addMatrices(b00, b11)},
+                    {MatrixUtil.addMatrices(a10, a11), b00},
+                    {a00, MatrixUtil.subtractMatrices(b01, b11)},
+                    {a11, MatrixUtil.subtractMatrices(b10, b00)},
+                    {MatrixUtil.addMatrices(a00, a01), b11},
+                    {MatrixUtil.subtractMatrices(a10, a00), MatrixUtil.addMatrices(b00, b01)},
+                    {MatrixUtil.subtractMatrices(a01, a11), MatrixUtil.addMatrices(b10, b11)}};
 
-            // resulting submatrices of final multiplication matrix
+
+            List<int[][]> subResults = Arrays.stream(pairsOfMatrices)
+                    .parallel()
+                    .map(pair -> computeMatrixMult(pair[0], pair[1]))
+                    .collect(Collectors.toList());
+
             c00 = MatrixUtil.addMatrices(MatrixUtil.subtractMatrices (
-                    MatrixUtil.addMatrices(m1, m4), m5), m7);
-            c01 = MatrixUtil.addMatrices(m3, m5);
-            c10 = MatrixUtil.addMatrices(m2, m4);
+                    MatrixUtil.addMatrices(subResults.get(0), subResults.get(3)),
+                    subResults.get(4)), subResults.get(6));
+            c01 = MatrixUtil.addMatrices(subResults.get(2), subResults.get(4));
+            c10 = MatrixUtil.addMatrices(subResults.get(1), subResults.get(3));
             c11 = MatrixUtil.addMatrices(MatrixUtil.addMatrices(
-                    MatrixUtil.subtractMatrices(m1, m2), m3), m6);
+                    MatrixUtil.subtractMatrices(subResults.get(0), subResults.get(1)),
+                    subResults.get(2)), subResults.get(5));
 
             // join submatrices to get final multiplication matrix result
             result = MatrixUtil.joinMatrices(c00, c01, c10, c11, result.length);

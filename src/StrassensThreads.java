@@ -70,20 +70,26 @@ public class StrassensThreads implements MatrixMult {
             b10 = subMatricesB[2];
             b11 = subMatricesB[3];
 
-            subResults = new int[8][a00.length][a00.length];
+            subResults = new int[7][a00.length][a00.length];
 
             //pairs of matrices that must be multiplied
-            int [][][][] pairsOfMatrices = {{a00, b00}, {a01, b10}, {a00, b01},
-                    {a01, b11}, {a10, b00}, {a11, b10}, {a10, b01}, {a11, b11}};
+            int [][][][] pairsOfMatrices = {
+                    {MatrixUtil.addMatrices(a00, a11), MatrixUtil.addMatrices(b00, b11)},
+                    {MatrixUtil.addMatrices(a10, a11), b00},
+                    {a00, MatrixUtil.subtractMatrices(b01, b11)},
+                    {a11, MatrixUtil.subtractMatrices(b10, b00)},
+                    {MatrixUtil.addMatrices(a00, a01), b11},
+                    {MatrixUtil.subtractMatrices(a10, a00), MatrixUtil.addMatrices(b00, b01)},
+                    {MatrixUtil.subtractMatrices(a01, a11), MatrixUtil.addMatrices(b10, b11)}};
 
             int numUsableThreads = NUM_THREADS;
-            if (NUM_THREADS > 8){
-                numUsableThreads = 8;
+            if (NUM_THREADS > 7){
+                numUsableThreads = 7;
             }
 
             MatrixThread[] threads = new MatrixThread[numUsableThreads];
-            int remainder = 8 % numUsableThreads;
-            int numPerThread = (8 -  remainder)/numUsableThreads;
+            int remainder = 7 % numUsableThreads;
+            int numPerThread = (7 -  remainder)/numUsableThreads;
             int indexFirstUnAssigned = 0;
             //assigns to each thread which matrices from pairsOfMatrices to multiply
             for (int i = 0; i< numUsableThreads; i++){
@@ -98,10 +104,15 @@ public class StrassensThreads implements MatrixMult {
 
             this.runThreads(threads);
 
-            d00 = MatrixUtil.addMatrices(subResults[0], subResults[1]);
-            d01 = MatrixUtil.addMatrices(subResults[2], subResults[3]);
-            d10 = MatrixUtil.addMatrices(subResults[4], subResults[5]);
-            d11 = MatrixUtil.addMatrices(subResults[6], subResults[7]);
+            // resulting submatrices of final multiplication matrix
+            d00 = MatrixUtil.addMatrices(MatrixUtil.subtractMatrices (
+                    MatrixUtil.addMatrices(subResults[0], subResults[3]),
+                    subResults[4]), subResults[6]);
+            d01 = MatrixUtil.addMatrices(subResults[2], subResults[4]);
+            d10 = MatrixUtil.addMatrices(subResults[1], subResults[3]);
+            d11 = MatrixUtil.addMatrices(MatrixUtil.addMatrices(
+                    MatrixUtil.subtractMatrices(subResults[0], subResults[1]),
+                    subResults[2]), subResults[5]);
 
             // join submatrices to get final multiplication matrix result
             result = MatrixUtil.joinMatrices(d00, d01, d10, d11, result.length);
@@ -189,26 +200,6 @@ public class StrassensThreads implements MatrixMult {
      */
     public static void main(String[] args) {
         MatrixUtil.testMatrixMult(new StrassensThreads());
-
-        int[][] A = new int[100][1000];
-        int[][] B = new int[1000][100];
-        for(int i = 0; i < A.length; i++){
-            for(int j = 0; j < A[0].length; j++) {
-                A[i][j] = i + j;
-                B[j][i] = j + i;
-            }
-        }
-
-        int[][] normal = MatrixUtil.multMatrices(A, B);
-        int[][] strassnes = (new StrassensThreads()).computeMatrixMult(A, B);
-
-        for (int i =0; i< normal.length;  i++){
-            for (int j = 0; j<normal[i].length; j++){
-                if (normal[i][j] != strassnes[i][j]){
-                    System.out.println("Not equal");
-                }
-            }
-        }
 
     }
 }
